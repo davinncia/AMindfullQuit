@@ -1,15 +1,19 @@
-package com.example.amindfullquit
+package com.example.amindfullquit.meditation
 
 import android.animation.Animator
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.view.isVisible
+import com.example.amindfullquit.R
+import com.example.amindfullquit.SeekCircle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MeditationActivity : AppCompatActivity(), SeekCircle.OnProgressChangeListener {
+
+class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
 
     //DATA
     private var mProgress = 0
@@ -23,25 +27,29 @@ class MeditationActivity : AppCompatActivity(), SeekCircle.OnProgressChangeListe
 
     private lateinit var progressAnimator: Animator
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_meditation)
 
-        mProgressView = findViewById(R.id.tv_progress)
-        mCircleProgress = findViewById(R.id.iv_pointer_progress);
-        mSeekCircle = findViewById(R.id.seekCircle)
-        mButton = findViewById(R.id.btn_meditation)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        val rootView = inflater.inflate(R.layout.fragment_timer, container, false);
+
+        mProgressView = rootView.findViewById(R.id.tv_progress)
+        mCircleProgress = rootView.findViewById(R.id.iv_pointer_progress)
+        mSeekCircle = rootView.findViewById(R.id.seekCircle)
+        mButton = rootView.findViewById(R.id.btn_meditation)
 
         mSeekCircle.setMyListener(this)
 
         mButton.setOnClickListener { handleButtonClick(it) }
-
-    }
-
-
-    override fun onProgressChanged(progress: Int) {
-        mProgressView.text = "$progress"
-        mProgress = progress
+        // Inflate the layout for this fragment
+        return rootView
     }
 
     private fun handleButtonClick(view: View){
@@ -51,9 +59,9 @@ class MeditationActivity : AppCompatActivity(), SeekCircle.OnProgressChangeListe
             mSeekCircle.startCountDown(mProgress)
             mButton.text = "Pause"
 
-            mCircleProgress.show()
             progressAnimator = mSeekCircle.countingAnimator(mCircleProgress, mProgress) //This should happen only once
             progressAnimator.start()
+            mCircleProgress.show()
 
         } else {
 
@@ -64,5 +72,16 @@ class MeditationActivity : AppCompatActivity(), SeekCircle.OnProgressChangeListe
             mCircleProgress.hide()
             progressAnimator.cancel()
         }
+    }
+
+    override fun onProgressChanged(progress: Int) {
+        mProgressView.text = "$progress"
+        mProgress = progress
+    }
+
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = TimerFragment()
     }
 }
