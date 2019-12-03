@@ -1,4 +1,4 @@
-package com.example.amindfullquit
+package com.example.amindfullquit.meditation
 
 import android.animation.Animator
 import android.content.Context
@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewAnimationUtils
+import android.widget.ImageView
+import com.example.amindfullquit.R
 import kotlin.math.*
 
 class SeekCircle : View {
@@ -18,16 +20,24 @@ class SeekCircle : View {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
 
+    //TIMER
     private lateinit var mTimer: CountDownTimer
     private var isCounting = false
+    private var hasPaused = false
 
     //VALUES
+    //Outer circle
     private var cx = 0F  //Center of circle
     private var cy = 0F
 
     private var radius = 0F
     private var angle = -90.0 //Starting on top
 
+    //Inner circle (filling animation)
+    private var fillRatePx = 0F
+    private var fillRadius = 0F
+
+    //Pointer
     private var pointerHalfSize = 100
     private var pointerX = 0F
     private var pointerY = 0F
@@ -42,6 +52,12 @@ class SeekCircle : View {
         color = Color.parseColor("#FFFFFF")
         strokeWidth = 10F
         style = Paint.Style.STROKE
+    }
+
+    private val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.parseColor("#FFFFFF")
+        strokeWidth = 10F
+        style = Paint.Style.FILL
     }
 
     private val mPointer = resources.getDrawable(R.drawable.ic_launcher_foreground, null)
@@ -70,12 +86,12 @@ class SeekCircle : View {
             canvas.drawARGB(255, 78, 168, 186) //Blue color
             canvas.drawCircle(cx, cy, radius, circlePaint) //Circle
 
-            mPointer.setBounds(-pointerHalfSize, -pointerHalfSize,
-                pointerHalfSize, pointerHalfSize)
+            canvas.drawCircle(cx, cy, fillRadius, fillPaint)
+
+            mPointer.setBounds(-pointerHalfSize, -pointerHalfSize, pointerHalfSize, pointerHalfSize)
 
             canvas.translate(pointerX, pointerY)
             mPointer.draw(canvas)
-
         }
 
     }
@@ -148,34 +164,40 @@ class SeekCircle : View {
     fun startCountDown(progress: Int){
         isCounting = true
 
-        mTimer = object: CountDownTimer(progress * 1000L + 200, 1000){
+        //keep radius & fillRate if has been paused
+        if (!hasPaused) //initialize filling rate
+            fillRatePx = (radius / progress)
 
-            override fun onFinish() {}
+        pointerX = -100F
+
+        mTimer = object: CountDownTimer(progress * 1000L, 1000){
+
+
+            override fun onFinish() {
+                isCounting = false
+                fillRadius = 0F
+                hasPaused = false
+            }
 
             override fun onTick(p0: Long) {
+
                 if (isCounting) {
-                    mOnProgressChangeListener?.onProgressChanged((p0 / 1000.0).roundToInt())
+                    fillRadius += fillRatePx
+                    //fillRadius = radius * (1 - (p0 / 1000.0) / progress).toFloat() //Inner circle growing each seconds
+                    invalidate()
+                    mOnProgressChangeListener?.onProgressChanged((p0 / 1000.0).roundToInt() - 1)
                 }
                 else
                     cancel()
             }
         }.start()
 
+
     }
 
     fun pauseCountDown(){
         isCounting = false
-    }
-
-    fun countingAnimator(view: View, progress: Int): Animator{
-
-        view.layoutParams.height = radius.toInt() * 2
-        view.layoutParams.width = radius.toInt() * 2
-
-        val animator = ViewAnimationUtils.createCircularReveal(view, radius.toInt(), radius.toInt(), 0f, radius)
-        animator.duration = progress * 1000L
-
-        return animator
+        hasPaused = true
     }
 
     ///////////////////

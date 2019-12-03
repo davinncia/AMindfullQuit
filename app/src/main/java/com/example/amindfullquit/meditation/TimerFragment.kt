@@ -7,10 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import com.example.amindfullquit.R
-import com.example.amindfullquit.SeekCircle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
@@ -21,7 +20,6 @@ class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
 
     //UI
     private lateinit var mProgressView: TextView
-    private lateinit var mCircleProgress: FloatingActionButton
     private lateinit var mSeekCircle: SeekCircle
     private lateinit var mButton: Button
 
@@ -41,7 +39,6 @@ class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
         val rootView = inflater.inflate(R.layout.fragment_timer, container, false);
 
         mProgressView = rootView.findViewById(R.id.tv_progress)
-        mCircleProgress = rootView.findViewById(R.id.iv_pointer_progress)
         mSeekCircle = rootView.findViewById(R.id.seekCircle)
         mButton = rootView.findViewById(R.id.btn_meditation)
 
@@ -59,24 +56,21 @@ class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
             mSeekCircle.startCountDown(mProgress)
             mButton.text = "Pause"
 
-            progressAnimator = mSeekCircle.countingAnimator(mCircleProgress, mProgress) //This should happen only once
-            progressAnimator.start()
-            mCircleProgress.show()
-
         } else {
 
             isCounting = false
             mSeekCircle.pauseCountDown()
             mButton.text = "Start"
 
-            mCircleProgress.hide()
-            progressAnimator.cancel()
         }
     }
+
+
 
     override fun onProgressChanged(progress: Int) {
         mProgressView.text = "$progress"
         mProgress = progress
+
     }
 
 
