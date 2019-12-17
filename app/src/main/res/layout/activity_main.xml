@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,17 +8,112 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tv_meditation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="This is step activity !"
-        android:textSize="28dp"
-        android:textStyle="bold"
+    <LinearLayout
+        android:id="@+id/linear_layout_principles_main"
+        style="@style/MainFrames"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/linear_layout_meditation_main"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:src="@drawable/ic_bulb" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Principles" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_meditation_main"
+        style="@style/MainFrames"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/linear_layout_data_main"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_principles_main">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:src="@drawable/ic_meditator" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Sitting Meditation" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_data_main"
+        style="@style/MainFrames"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/linear_layout_developer_main"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_meditation_main">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:src="@drawable/ic_data" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Consumption data" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_developer_main"
+        style="@style/MainFrames"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_data_main">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:src="@drawable/ic_code" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Developer" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

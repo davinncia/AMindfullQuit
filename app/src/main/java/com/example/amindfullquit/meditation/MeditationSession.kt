@@ -1,5 +1,4 @@
 package com.example.amindfullquit.meditation
 
-import java.util.*
-
-data class MeditationSession(val mDate: Date, var mLength: Int = 0)
+//Date format = YYMMDD
+data class MeditationSession(val creationTimeStamp: Long, var minutes: Int = 0)

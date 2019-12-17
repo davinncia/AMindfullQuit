@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container_meditation_log_item"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="32dp">
+
+    <ImageView
+        android:id="@+id/iv_circle_meditation_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/circle_log_data"
+        />
+
+    <TextView
+        android:id="@+id/tv_number_meditation_log_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingBottom="16dp"
+        android:text="80"
+        style="@style/BigText"
+        />
+
+    <TextView
+        android:id="@+id/tv_description_meditation_log_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_number_meditation_log_item"
+        android:layout_centerHorizontal="true"
+        android:text="hours"/>
+
+</RelativeLayout>

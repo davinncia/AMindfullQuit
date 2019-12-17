@@ -4,12 +4,12 @@
     <item>
         <shape
             android:shape="ring"
-            android:innerRadius="3dp"
-            android:thickness="2dp"
+            android:innerRadius="0dp"
+            android:thickness="4dp"
             android:useLevel="false">
 
             <solid
-                android:color="@color/colorAccent"/>
+                android:color="@color/colorPrimary"/>
         </shape>
     </item>
 

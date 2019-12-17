@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorAccentStart">#D6638B</color>
+    -->
+
+    <color name="colorPrimary">#8C7078</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#8C7078</color>
+    <color name="colorAccentStart">#D9C3C9</color>
+
+    <color name="mauveDark">#8C7078</color>
+    <color name="mauveLight">#D9C3C9</color>
+    <color name="greenBright">#6B9170</color>
+    <color name="greenSoft">#CDD9CD</color>
+
+    <color name="myBlue">#7BAEDD</color>
+    <color name="endBlue">#B1D5F5</color>
+    <color name="myRed">#FCB6B6</color>
+    <color name="endRed">#FFD5D5</color>
 </resources>

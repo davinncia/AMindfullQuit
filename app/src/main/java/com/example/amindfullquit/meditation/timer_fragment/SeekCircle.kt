@@ -1,6 +1,5 @@
-package com.example.amindfullquit.meditation
+package com.example.amindfullquit.meditation.timer_fragment
 
-import android.animation.Animator
 import android.content.Context
 import android.graphics.*
 import android.os.CountDownTimer
@@ -8,24 +7,27 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewAnimationUtils
-import android.widget.ImageView
 import com.example.amindfullquit.R
 import kotlin.math.*
 
 class SeekCircle : View {
 
-    constructor(context: Context): this(context, null)
+    constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
 
 
     //TIMER
     private lateinit var mTimer: CountDownTimer
-    private var isCounting = false
     private var hasPaused = false
 
     //VALUES
+    private val mMaxProgress = 30 //Minutes
+    private var mProgress = 0 //Seconds
     //Outer circle
     private var cx = 0F  //Center of circle
     private var cy = 0F
@@ -38,7 +40,7 @@ class SeekCircle : View {
     private var fillRadius = 0F
 
     //Pointer
-    private var pointerHalfSize = 100
+    private var pointerHalfSize = 16
     private var pointerX = 0F
     private var pointerY = 0F
 
@@ -55,12 +57,12 @@ class SeekCircle : View {
     }
 
     private val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.parseColor("#FFFFFF")
+        color = Color.parseColor("#8C7078")
         strokeWidth = 10F
         style = Paint.Style.FILL
     }
 
-    private val mPointer = resources.getDrawable(R.drawable.ic_launcher_foreground, null)
+    private val mPointer = resources.getDrawable(R.drawable.ic_pointer, null)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val w = resolveSizeAndState(suggestedMinimumWidth, widthMeasureSpec, 1)
@@ -83,7 +85,7 @@ class SeekCircle : View {
 
         canvas.apply {
 
-            canvas.drawARGB(255, 78, 168, 186) //Blue color
+            //canvas.drawARGB(255, 78, 168, 186) //Blue color
             canvas.drawCircle(cx, cy, radius, circlePaint) //Circle
 
             canvas.drawCircle(cx, cy, fillRadius, fillPaint)
@@ -99,9 +101,7 @@ class SeekCircle : View {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
-        if (isCounting) return false
-
-        when(event?.action){
+        when (event?.action) {
             MotionEvent.ACTION_DOWN -> if (!isValidTouch(event.x, event.y)) return false
             MotionEvent.ACTION_MOVE -> updateOnTouch(event)
             MotionEvent.ACTION_UP -> Log.d("debuglog", "UP")
@@ -114,12 +114,12 @@ class SeekCircle : View {
         ((x in pointerX - 50..pointerX + 50) && (y in pointerY - 50..pointerY + 50))
 
 
-    private fun updateOnTouch(event: MotionEvent){
+    private fun updateOnTouch(event: MotionEvent) {
 
         val currentX = event.x.toInt()
         val currentY = event.y.toInt()
 
-        if ((abs(currentX - lastXPosition) > 20) || (abs(currentY - lastYPosition) > 20)){ //No need to be too accurate, save some memory
+        if ((abs(currentX - lastXPosition) > 10) || (abs(currentY - lastYPosition) > 10)) { //No need to be too accurate, save some memory
 
             //Distance between the two points
             //val d = sqrt((lastXPosition - currentX.toDouble()).pow(2) + (lastYPosition - currentY.toDouble()).pow(2))
@@ -128,7 +128,8 @@ class SeekCircle : View {
             //val sweepAngle = Math.toDegrees(atan2(currentY - cy, currentX - cx) - atan2(lastYPosition - cy, lastXPosition - cx).toDouble())
 
             //Calculating angle from center
-            val touchAngle = Math.toDegrees(atan2(currentY - cy.toDouble(), currentX - cx.toDouble()))
+            val touchAngle =
+                Math.toDegrees(atan2(currentY - cy.toDouble(), currentX - cx.toDouble()))
 
             lastXPosition = currentX
             lastYPosition = currentY
@@ -137,7 +138,7 @@ class SeekCircle : View {
         }
     }
 
-    private fun updatePointerPosition(touchAngle: Double){
+    private fun updatePointerPosition(touchAngle: Double) {
 
         angle = touchAngle
 
@@ -149,68 +150,80 @@ class SeekCircle : View {
         invalidate()
     }
 
-    private fun updateProgress(angle: Int){
+    private fun updateProgress(angle: Int) {
+
+        val progressRatio = 360 / mMaxProgress - 1
         //Top: -90°; Right: 0°; Bottom: 90°; Left: +/-180°
         val progress =
-            if (angle in -180..-89) 45 + ((angle + 180) / 6)  //Top left part of circle is inverted
-            else (angle + 90) / 6
+            if (angle in -180..-89)
+                mMaxProgress * 3 / 4 + ((angle + 180) / progressRatio)  //Top left part of circle is inverted
+            else
+                (angle + 90) / progressRatio
 
         mOnProgressChangeListener?.onProgressChanged(progress)
+        mProgress = progress * 60
     }
 
     ///////////////////
     //////COUNTING/////
     ///////////////////
-    fun startCountDown(progress: Int){
-        isCounting = true
+    fun startCountDown() {
 
         //keep radius & fillRate if has been paused
         if (!hasPaused) //initialize filling rate
-            fillRatePx = (radius / progress)
+            fillRatePx = (radius / mProgress)
 
         pointerX = -100F
 
-        mTimer = object: CountDownTimer(progress * 1000L, 1000){
-
+        mTimer = object : CountDownTimer(mProgress * 1_000L + 300, 1000) {
 
             override fun onFinish() {
-                isCounting = false
                 fillRadius = 0F
                 hasPaused = false
+                mProgress = 0
+                angle = -90.0
+                pointerX = (radius * cos(Math.toRadians(angle)).toFloat() + cx)
+                pointerY = (radius * sin(Math.toRadians(angle)).toFloat() + cy)
             }
 
             override fun onTick(p0: Long) {
 
-                if (isCounting) {
-                    fillRadius += fillRatePx
-                    //fillRadius = radius * (1 - (p0 / 1000.0) / progress).toFloat() //Inner circle growing each seconds
-                    invalidate()
-                    mOnProgressChangeListener?.onProgressChanged((p0 / 1000.0).roundToInt() - 1)
+                mProgress--
+                fillRadius += fillRatePx //Inner circle growing each seconds
+
+                invalidate()
+
+                if (p0 < 1000) { //Finished
+                    mOnProgressChangeListener?.onProgressChanged(0)
                 }
-                else
-                    cancel()
+
             }
         }.start()
 
 
     }
 
-    fun pauseCountDown(){
-        isCounting = false
+    fun pauseCountDown() {
+        mTimer.cancel()
         hasPaused = true
+    }
+
+    fun stopCountDown() {
+        mTimer.onFinish()
+        mTimer.cancel()
+        invalidate()
     }
 
     ///////////////////
     /////LISTENER//////
     ///////////////////
-    fun setMyListener(onProgressChangeListener: OnProgressChangeListener){
+    fun setMyListener(onProgressChangeListener: OnProgressChangeListener) {
         mOnProgressChangeListener = onProgressChangeListener
     }
 
     interface OnProgressChangeListener {
         fun onProgressChanged(progress: Int)
     }
-
 
 
 }

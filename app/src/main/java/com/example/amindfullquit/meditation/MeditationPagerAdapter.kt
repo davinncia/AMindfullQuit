@@ -3,6 +3,8 @@ package com.example.amindfullquit.meditation
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.example.amindfullquit.meditation.log_fragment.LogFragment
+import com.example.amindfullquit.meditation.timer_fragment.TimerFragment
 
 class MeditationPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAdapter(fm, behavior) {
 
@@ -17,6 +19,5 @@ class MeditationPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentState
     }
 
     override fun getCount(): Int = NBR_PAGES
-
 
 }

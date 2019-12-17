@@ -1,6 +1,7 @@
-package com.example.amindfullquit.meditation
+package com.example.amindfullquit.meditation.timer_fragment
 
 import androidx.lifecycle.ViewModel
+import com.example.amindfullquit.meditation.MeditationSession
 import java.util.*
 
 class TimerViewModel : ViewModel(){
@@ -12,7 +13,7 @@ class TimerViewModel : ViewModel(){
     }
 
     fun saveSession(){
-        val session = MeditationSession(Calendar.getInstance().time, mMinutes)
+
         //Save with Room
     }
 }
