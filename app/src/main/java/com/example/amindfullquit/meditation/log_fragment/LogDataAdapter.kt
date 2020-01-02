@@ -10,7 +10,6 @@ import com.example.amindfullquit.R
 
 class LogDataAdapter(private val mContext: Context) : RecyclerView.Adapter<LogDataAdapter.LogDataViewHolder>() {
 
-    //TODO: Can't initialize a null List like in java
     private var mLogData = ArrayList<LogDataUi>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogDataViewHolder {

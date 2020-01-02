@@ -12,8 +12,8 @@
     <com.example.amindfullquit.meditation.timer_fragment.SeekCircle
         android:id="@+id/seekCircle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_start_meditation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,7 +43,7 @@
 
     <ImageButton
         android:id="@+id/ib_pause_meditation"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
         android:src="@drawable/ic_pause"
@@ -55,7 +55,7 @@
 
     <ImageButton
         android:id="@+id/ib_stop_meditation"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
         android:src="@drawable/ic_stop"

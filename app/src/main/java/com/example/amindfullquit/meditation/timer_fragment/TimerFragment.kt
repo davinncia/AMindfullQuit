@@ -1,6 +1,5 @@
 package com.example.amindfullquit.meditation.timer_fragment
 
-import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,36 +15,32 @@ class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
     private var isCounting = false
 
     //UI
-    private lateinit var mProgressView: TextView
-    private lateinit var mSeekCircle: SeekCircle
-    private lateinit var mStartButton: ImageButton
-    private lateinit var mPauseButton: ImageButton
-    private lateinit var mStopButton: ImageButton
+    private lateinit var progressView: TextView
+    private lateinit var seekCircle: SeekCircle
+    private lateinit var startButton: ImageButton
+    private lateinit var pauseButton: ImageButton
+    private lateinit var stopButton: ImageButton
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        val rootView = inflater.inflate(R.layout.fragment_timer, container, false);
+        val rootView = inflater.inflate(R.layout.fragment_timer, container, false)
 
-        mProgressView = rootView.findViewById(R.id.tv_progress)
-        mSeekCircle = rootView.findViewById(R.id.seekCircle)
-        mStartButton = rootView.findViewById(R.id.btn_start_meditation)
-        mPauseButton = rootView.findViewById(R.id.ib_pause_meditation)
-        mStopButton = rootView.findViewById(R.id.ib_stop_meditation)
+        progressView = rootView.findViewById(R.id.tv_progress)
+        seekCircle = rootView.findViewById(R.id.seekCircle)
+        startButton = rootView.findViewById(R.id.btn_start_meditation)
+        pauseButton = rootView.findViewById(R.id.ib_pause_meditation)
+        stopButton = rootView.findViewById(R.id.ib_stop_meditation)
 
-        mSeekCircle.setMyListener(this)
+        seekCircle.onProgressChangeListener = this
 
-        mStartButton.setOnClickListener { handleButtonsClick(it) }
-        mPauseButton.setOnClickListener { handleButtonsClick(it) }
-        mStopButton.setOnClickListener { handleButtonsClick(it) }
+        startButton.setOnClickListener { handleButtonsClick(it) }
+        pauseButton.setOnClickListener { handleButtonsClick(it) }
+        stopButton.setOnClickListener { handleButtonsClick(it) }
+
         // Inflate the layout for this fragment
         return rootView
     }
@@ -55,34 +50,34 @@ class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
         when(view.id){
             R.id.btn_start_meditation -> {
                 isCounting = true
-                mSeekCircle.startCountDown()
-                mStartButton.visibility = View.GONE
-                mProgressView.visibility = View.INVISIBLE
-                mPauseButton.visibility = View.VISIBLE
-                mStopButton.visibility = View.VISIBLE
-                mProgressView.text = "0"
+                seekCircle.startCountDown()
+                startButton.visibility = View.INVISIBLE
+                progressView.visibility = View.INVISIBLE
+                pauseButton.visibility = View.VISIBLE
+                stopButton.visibility = View.VISIBLE
+                progressView.text = "0"
             }
 
             R.id.ib_pause_meditation -> {
                 isCounting = if (isCounting) {
-                    mSeekCircle.pauseCountDown()
-                    mPauseButton.setImageDrawable(context?.getDrawable(R.drawable.ic_play))
+                    seekCircle.pauseCountDown()
+                    pauseButton.setImageDrawable(requireContext().getDrawable(R.drawable.ic_play))
                     false
                 } else {
-                    mSeekCircle.startCountDown()
-                    mPauseButton.setImageDrawable(context?.getDrawable(R.drawable.ic_pause))
+                    seekCircle.startCountDown()
+                    pauseButton.setImageDrawable(requireContext().getDrawable(R.drawable.ic_pause))
                     true
                 }
 
             }
 
             R.id.ib_stop_meditation -> {
-                mPauseButton.visibility = View.GONE
-                mStopButton.visibility = View.GONE
-                mStartButton.visibility = View.VISIBLE
-                mProgressView.visibility = View.VISIBLE
+                pauseButton.visibility = View.GONE
+                stopButton.visibility = View.GONE
+                startButton.visibility = View.VISIBLE
+                progressView.visibility = View.VISIBLE
                 isCounting = false
-                mSeekCircle.stopCountDown()
+                seekCircle.stopCountDown()
                 //Save time done
             }
         }
@@ -90,17 +85,21 @@ class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
 
 
     override fun onProgressChanged(progress: Int) {
-        mProgressView.text = "$progress"
+        progressView.text = "$progress"
 
-        if (isCounting && progress == 0){
-            mPauseButton.visibility = View.GONE
-            mStopButton.visibility = View.GONE
-            mProgressView.visibility = View.VISIBLE
-            mProgressView.text = "Well done !"
+        if (isCounting && progress == 0){ //Finished
+            pauseButton.visibility = View.GONE
+            stopButton.visibility = View.GONE
+            progressView.visibility = View.VISIBLE
+            progressView.text = "Well done !"
         }
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        seekCircle.stopCountDown()
+    }
 
     companion object {
         @JvmStatic

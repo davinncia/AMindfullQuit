@@ -22,16 +22,16 @@ class SeekCircle : View {
 
 
     //TIMER
-    private lateinit var mTimer: CountDownTimer
+    private var timer: CountDownTimer? = null
     private var hasPaused = false
 
     //VALUES
-    private val mMaxProgress = 30 //Minutes
-    private var mProgress = 0 //Seconds
+    private val maxProgress = 30 //Minutes
+    private var progress = 0 //Seconds
+
     //Outer circle
     private var cx = 0F  //Center of circle
     private var cy = 0F
-
     private var radius = 0F
     private var angle = -90.0 //Starting on top
 
@@ -47,7 +47,7 @@ class SeekCircle : View {
     private var lastXPosition = 0
     private var lastYPosition = 0
 
-    private var mOnProgressChangeListener: OnProgressChangeListener? = null
+    var onProgressChangeListener: OnProgressChangeListener? = null
 
 
     private val circlePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -85,13 +85,11 @@ class SeekCircle : View {
 
         canvas.apply {
 
-            //canvas.drawARGB(255, 78, 168, 186) //Blue color
-            canvas.drawCircle(cx, cy, radius, circlePaint) //Circle
+            canvas.drawCircle(cx, cy, radius, circlePaint) //Outer circle
 
-            canvas.drawCircle(cx, cy, fillRadius, fillPaint)
+            canvas.drawCircle(cx, cy, fillRadius, fillPaint) //Inner circle
 
             mPointer.setBounds(-pointerHalfSize, -pointerHalfSize, pointerHalfSize, pointerHalfSize)
-
             canvas.translate(pointerX, pointerY)
             mPointer.draw(canvas)
         }
@@ -152,16 +150,16 @@ class SeekCircle : View {
 
     private fun updateProgress(angle: Int) {
 
-        val progressRatio = 360 / mMaxProgress - 1
+        val progressRatio = 360 / maxProgress - 1
         //Top: -90°; Right: 0°; Bottom: 90°; Left: +/-180°
         val progress =
             if (angle in -180..-89)
-                mMaxProgress * 3 / 4 + ((angle + 180) / progressRatio)  //Top left part of circle is inverted
+                maxProgress * 3 / 4 + ((angle + 180) / progressRatio)  //Top left part of circle is inverted
             else
                 (angle + 90) / progressRatio
 
-        mOnProgressChangeListener?.onProgressChanged(progress)
-        mProgress = progress * 60
+        onProgressChangeListener?.onProgressChanged(progress)
+        this.progress = progress * 60
     }
 
     ///////////////////
@@ -171,16 +169,16 @@ class SeekCircle : View {
 
         //keep radius & fillRate if has been paused
         if (!hasPaused) //initialize filling rate
-            fillRatePx = (radius / mProgress)
+            fillRatePx = (radius / progress)
 
         pointerX = -100F
 
-        mTimer = object : CountDownTimer(mProgress * 1_000L + 300, 1000) {
+        timer = object : CountDownTimer(progress * 1_000L + 300, 1000) {
 
             override fun onFinish() {
                 fillRadius = 0F
                 hasPaused = false
-                mProgress = 0
+                progress = 0
                 angle = -90.0
                 pointerX = (radius * cos(Math.toRadians(angle)).toFloat() + cx)
                 pointerY = (radius * sin(Math.toRadians(angle)).toFloat() + cy)
@@ -188,13 +186,13 @@ class SeekCircle : View {
 
             override fun onTick(p0: Long) {
 
-                mProgress--
+                progress--
                 fillRadius += fillRatePx //Inner circle growing each seconds
 
                 invalidate()
 
                 if (p0 < 1000) { //Finished
-                    mOnProgressChangeListener?.onProgressChanged(0)
+                    onProgressChangeListener?.onProgressChanged(0)
                 }
 
             }
@@ -204,23 +202,20 @@ class SeekCircle : View {
     }
 
     fun pauseCountDown() {
-        mTimer.cancel()
+        timer?.cancel()
         hasPaused = true
     }
 
     fun stopCountDown() {
-        mTimer.onFinish()
-        mTimer.cancel()
+        timer?.onFinish()
+        timer?.cancel()
         invalidate()
     }
+
 
     ///////////////////
     /////LISTENER//////
     ///////////////////
-    fun setMyListener(onProgressChangeListener: OnProgressChangeListener) {
-        mOnProgressChangeListener = onProgressChangeListener
-    }
-
     interface OnProgressChangeListener {
         fun onProgressChanged(progress: Int)
     }

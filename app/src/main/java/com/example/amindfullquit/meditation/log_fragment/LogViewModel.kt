@@ -49,6 +49,10 @@ class LogViewModel : ViewModel() {
             MeditationSession(17268276, 10),
             MeditationSession(17268276, 12),
             MeditationSession(17268276, 6),
+            MeditationSession(17268276, 11),
+            MeditationSession(17268276, 10),
+            MeditationSession(17268276, 12),
+            MeditationSession(17268276, 6),
             MeditationSession(17268276, 11)
         )
         sessionsLiveData.value = sessions
@@ -84,11 +88,8 @@ class LogViewModel : ViewModel() {
             //VIEW HEIGHT
             val height = (maxHeight / maxTime * i.minutes)
             //DESCRIPTION
-            //val month = DateFormat.getDateInstance(DateFormat.MONTH_FIELD).format(i.creationTimeStamp)
-            //val day = DateFormat.getDateInstance(DateFormat.DAY_OF_WEEK_FIELD).format(i.creationTimeStamp)
-            val format = SimpleDateFormat("EEE  FF  MMM", Locale.getDefault())
-            val date = format.format(i.creationTimeStamp)
-            //val description = day + " " + month + "\n" + i.minutes + "min"
+            val simpleFormat = SimpleDateFormat("EEE  FF  MMM", Locale.getDefault())
+            val date = simpleFormat.format(i.creationTimeStamp)
             val description = date + "\n" + i.minutes + "min"
 
             chartItems.add(ChartItemUi(description, i.minutes, height))

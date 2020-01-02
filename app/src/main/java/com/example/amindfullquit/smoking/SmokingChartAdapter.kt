@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.amindfullquit.R
 import com.example.amindfullquit.meditation.log_fragment.ChartItemUi
 
-class SmokingChartAdapter(private var mItems: List<SmokingData>,
+class SmokingChartAdapter(private var mItems: List<SmokingChartItemUi>,
                           private val mListener: ItemClickListener,
                           private val mContext: Context
 ) : RecyclerView.Adapter<SmokingChartAdapter.ChartItemViewHolder>() {
@@ -27,7 +27,7 @@ class SmokingChartAdapter(private var mItems: List<SmokingData>,
         return mItems.size
     }
 
-    fun populateChart(chartItems: List<SmokingData>){
+    fun populateChart(chartItems: List<SmokingChartItemUi>){
         mItems = chartItems
         notifyDataSetChanged()
     }
@@ -38,7 +38,7 @@ class SmokingChartAdapter(private var mItems: List<SmokingData>,
         //Apply animation
         holder.barView.animation = AnimationUtils.loadAnimation(mContext, R.anim.fade_transition_animation)
 
-        //holder.barView.layoutParams.height = mItems[position].height
+        holder.barView.layoutParams.height = mItems[position].height
     }
 
     class ChartItemViewHolder(itemView: View, listener: ItemClickListener) : RecyclerView.ViewHolder(itemView){

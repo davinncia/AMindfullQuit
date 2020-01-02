@@ -3,8 +3,8 @@
     android:shape="rectangle">
 
     <size
-        android:width="16dp"
-        android:height="100dp" />
+        android:height="124dp"
+        android:width="24dp" />
 
     <corners
         android:radius="32dp"
@@ -17,4 +17,7 @@
         android:type="linear" />
 
 
+    <stroke
+        android:color="#fff"
+        android:width="4dp" />
 </shape>

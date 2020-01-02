@@ -1,6 +1,5 @@
 package com.example.amindfullquit.meditation.log_fragment
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,45 +7,58 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.amindfullquit.R
 
-class ChartItemAdapter(private var mItems: List<ChartItemUi>,
-                       private val mListener: ChartItemClickListener,
-                       private val mContext: Context)
+class ChartItemAdapter(private var chartItems: List<ChartItemUi>,
+                       private val listener: ChartItemClickListener)
     : RecyclerView.Adapter<ChartItemAdapter.ChartItemViewHolder>() {
 
+    private var barWidth = 100
+    var isZooming = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChartItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_chart, parent, false)
         return ChartItemViewHolder(
-            view, mListener
+            view, listener
         )
     }
 
-    override fun getItemCount(): Int {
-        return mItems.size
-    }
-
-    fun populateChart(chartItems: List<ChartItemUi>){
-        mItems = chartItems
-        notifyDataSetChanged()
-    }
+    override fun getItemCount() = chartItems.size
 
     override fun onBindViewHolder(holder: ChartItemViewHolder, position: Int) {
 
-        //Apply animation
-        holder.barView.animation = AnimationUtils.loadAnimation(mContext, R.anim.fade_transition_animation)
+        holder.bind(chartItems[position])
 
-        holder.barView.layoutParams.height = mItems[position].height
     }
 
-    class ChartItemViewHolder(itemView: View, listener: ChartItemClickListener) : RecyclerView.ViewHolder(itemView){
+    fun populateChart(chartItems: List<ChartItemUi>){
+        this.chartItems = chartItems
+        notifyDataSetChanged()
+    }
+
+    fun zoom(barWidth: Int){
+        this.barWidth = barWidth
+        isZooming = true
+        notifyDataSetChanged()
+    }
+
+    inner class ChartItemViewHolder(itemView: View, listener: ChartItemClickListener) : RecyclerView.ViewHolder(itemView){
 
         init {
-            //TODO: Implementation of item click (java style)
             itemView.setOnClickListener { listener.onChartItemClick(adapterPosition) }
         }
 
-        val barView: View = itemView.findViewById<View>(R.id.view_bar_chart_item)
+        private val barView: View = itemView.findViewById(R.id.view_bar_chart_item)
+        private val barFrame: View = itemView.findViewById(R.id.frame_chart_bar_item)
+
+        fun bind(item: ChartItemUi){
+            //Apply animation if user is not zooming
+            if (!isZooming)
+                barView.animation = AnimationUtils.loadAnimation(barView.context, R.anim.fade_transition_animation)
+            //Bar height
+            barView.layoutParams.height = item.height
+            //Bar width
+            barFrame.layoutParams.width = barWidth
+        }
 
     }
 
