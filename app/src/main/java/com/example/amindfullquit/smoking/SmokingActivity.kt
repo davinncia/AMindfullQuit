@@ -2,14 +2,15 @@ package com.example.amindfullquit.smoking
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.ViewTreeObserver
+import android.view.*
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.amindfullquit.R
+import com.example.amindfullquit.settings.SettingsActivity
+import com.example.amindfullquit.di.ViewModelFactory
 
 class SmokingActivity : AppCompatActivity(), SmokingChartAdapter.ItemClickListener {
 
@@ -29,12 +30,14 @@ class SmokingActivity : AppCompatActivity(), SmokingChartAdapter.ItemClickListen
 
         initChartRecyclerView()
 
-        viewModel = ViewModelProviders.of(this)[SmokingDataViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(application))[SmokingDataViewModel::class.java]
+
         viewModel.getSmokingChartItems().observe(this, Observer { data ->
             chartAdapter.populateChart(data)
+            chartRecyclerView.scrollToPosition(data.size - 1)
         })
 
-        viewModel.cigarettesAvoided.observe(this, Observer {
+        viewModel.cigarettesAvoidedLiveData.observe(this, Observer {
             findViewById<TextView>(R.id.tv_number_smoking_log).text = it.toString()
         })
 
@@ -52,6 +55,25 @@ class SmokingActivity : AppCompatActivity(), SmokingChartAdapter.ItemClickListen
             setHasFixedSize(true)
             adapter = chartAdapter
             layoutManager = viewManager
+        }
+    }
+
+    ////////
+    //MENU//
+    ////////
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_smoking, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId){
+            R.id.settings_smoking_menu -> {
+                startActivity(SettingsActivity.newInstance(this))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
