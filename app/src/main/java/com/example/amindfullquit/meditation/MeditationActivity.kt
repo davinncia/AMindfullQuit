@@ -25,7 +25,7 @@ class MeditationActivity : AppCompatActivity() {
         mTabLayout.setupWithViewPager(mPager)
 
         //this.supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.myBlue)))
-        this.supportActionBar?.hide()
+        //this.supportActionBar?.hide()
 
     }
 

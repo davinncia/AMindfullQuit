@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.amindfullquit.ChartOnScaleGestureListener
 import com.example.amindfullquit.R
+import com.example.amindfullquit.RoundDataAdapter
 
 class LogFragment : Fragment(), ChartItemAdapter.ChartItemClickListener {
 
@@ -20,13 +22,10 @@ class LogFragment : Fragment(), ChartItemAdapter.ChartItemClickListener {
     //VIEW
     private lateinit var chartRecyclerView: RecyclerView
     private lateinit var chartAdapter: ChartItemAdapter
-    private lateinit var logDataAdapter: LogDataAdapter
+    private lateinit var logDataAdapter: RoundDataAdapter
 
-    private lateinit var chartItemDetailsView: TextView
-
-    private var barWidth = 100
-
-    var scaleGestureDetector: ScaleGestureDetector? = null
+    private lateinit var chartItemDateView: TextView
+    private lateinit var chartItemTimeView: TextView
 
 
     override fun onCreateView(
@@ -34,9 +33,10 @@ class LogFragment : Fragment(), ChartItemAdapter.ChartItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        val rootView = inflater.inflate(R.layout.fragment_log, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_mediation_log, container, false)
 
-        chartItemDetailsView = rootView.findViewById(R.id.tv_details_chart_meditation)
+        chartItemDateView = rootView.findViewById(R.id.tv_date_chart_meditation)
+        chartItemTimeView = rootView.findViewById(R.id.tv_quantity_chart_meditation)
 
         initDataRecyclerView(rootView)
         initChartRecyclerView(rootView)
@@ -56,6 +56,9 @@ class LogFragment : Fragment(), ChartItemAdapter.ChartItemClickListener {
         return rootView
     }
 
+    //-------------------------------------------------------------------------------------------//
+    //                                 R E C Y C L E R   V I E W S
+    //-------------------------------------------------------------------------------------------//
     private fun initDataRecyclerView(rootView: View){
 
         val recyclerView: RecyclerView = rootView.findViewById(R.id.recycler_view_log_data_meditation)
@@ -63,7 +66,8 @@ class LogFragment : Fragment(), ChartItemAdapter.ChartItemClickListener {
         val helper = LinearSnapHelper()
         helper.attachToRecyclerView(recyclerView)
 
-        logDataAdapter = LogDataAdapter(requireContext())
+        logDataAdapter =
+            RoundDataAdapter(requireContext())
 
         recyclerView.apply {
             setHasFixedSize(true)
@@ -75,10 +79,19 @@ class LogFragment : Fragment(), ChartItemAdapter.ChartItemClickListener {
     private fun initChartRecyclerView(rootView: View){
 
         chartRecyclerView = rootView.findViewById(R.id.recycler_view_chart_meditation)
-
         chartAdapter = ChartItemAdapter(ArrayList(), this@LogFragment)
 
-        scaleGestureDetector = ScaleGestureDetector(requireContext(), MyOnScaleGestureListener())
+        val gestureListener = ChartOnScaleGestureListener(chartAdapter.barWidth)
+        gestureListener.setZoomListener( object: ChartOnScaleGestureListener.ZoomListener{
+            override fun onZooming(barWidth: Int) {
+                chartAdapter.zoom(barWidth)
+            }
+
+            override fun zoomingStopped() {
+                chartAdapter.isZooming = false
+            }
+        })
+        val scaleGestureDetector = ScaleGestureDetector(requireContext(), gestureListener)
 
 
         chartRecyclerView.apply {
@@ -87,21 +100,28 @@ class LogFragment : Fragment(), ChartItemAdapter.ChartItemClickListener {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = chartAdapter
 
-            setOnTouchListener { v, event ->
-                scaleGestureDetector?.onTouchEvent(event)
-                false
+            setOnTouchListener { _, event ->
+                scaleGestureDetector.onTouchEvent(event)
+                false //Still allow scrolling
             }
 
         }
 
     }
 
+    //-------------------------------------------------------------------------------------------//
+    //                                         C L I C K S
+    //-------------------------------------------------------------------------------------------//
     override fun onChartItemClick(position: Int) {
-        //TODO  VIEWMODEL
-        chartItemDetailsView.text = chartItems[position].description
+        //TODO  VIEW MODEL
+        chartItemDateView.text = chartItems[position].description
+        chartItemTimeView.text = "${chartItems[position].minutes}min"
     }
 
 
+    //-------------------------------------------------------------------------------------------//
+    //                                        H E L P E R S
+    //-------------------------------------------------------------------------------------------//
     //VIEW SIZE HELPER, extension function
     private fun <T : View> T.dimensions(function: (Int, Int) -> Unit) {
         if (height == 0 || width == 0)
@@ -112,45 +132,6 @@ class LogFragment : Fragment(), ChartItemAdapter.ChartItemClickListener {
                 }    
             })
         else function(height, width)
-    }
-
-
-    private fun zoomIn(){
-        if (barWidth > 200) return //Big enough
-
-        barWidth = (barWidth * 1.2F).toInt()
-        chartAdapter.zoom(barWidth)
-    }
-
-    private fun zoomOut(){
-        if (barWidth < 30) return //Small enough
-
-        barWidth = (barWidth * 0.8F).toInt()
-        chartAdapter.zoom(barWidth)
-    }
-
-    inner class MyOnScaleGestureListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-        
-        override fun onScale(detector: ScaleGestureDetector): Boolean {
-            val scaleFactor = detector.scaleFactor
-
-            if (scaleFactor > 1.04) {
-                zoomIn()
-                return true
-            } else if (scaleFactor < 0.96){
-                zoomOut()
-                return true
-            }
-            return false
-        }
-
-        override fun onScaleBegin(detector: ScaleGestureDetector): Boolean {
-            return true
-        }
-
-        override fun onScaleEnd(detector: ScaleGestureDetector) {
-            chartAdapter.isZooming = false
-        }
     }
 
 

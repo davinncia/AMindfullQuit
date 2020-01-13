@@ -1,4 +1,4 @@
-package com.example.amindfullquit.meditation.log_fragment
+package com.example.amindfullquit
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.amindfullquit.R
+import com.example.amindfullquit.meditation.log_fragment.LogDataUi
 
-class LogDataAdapter(private val mContext: Context) : RecyclerView.Adapter<LogDataAdapter.LogDataViewHolder>() {
+class RoundDataAdapter(private val mContext: Context) : RecyclerView.Adapter<RoundDataAdapter.LogDataViewHolder>() {
 
     private var mLogData = ArrayList<LogDataUi>()
 
@@ -33,12 +33,12 @@ class LogDataAdapter(private val mContext: Context) : RecyclerView.Adapter<LogDa
 
         val currentLogData = mLogData[position]
 
-        holder.nbrView.text = currentLogData.number.toString()
+        holder.nbrView.text = currentLogData.value
         holder.descriptionView.text = currentLogData.description
 
     }
 
-    class LogDataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class LogDataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val nbrView: TextView = itemView.findViewById(R.id.tv_number_meditation_log_item)
         val descriptionView: TextView = itemView.findViewById(R.id.tv_description_meditation_log_item)

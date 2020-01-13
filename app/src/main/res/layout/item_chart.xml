@@ -3,6 +3,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/frame_chart_bar_item"
     android:layout_width="32dp"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
     <View
@@ -10,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@drawable/chart_bar"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        />
 
 </FrameLayout>

@@ -2,4 +2,14 @@
     <string name="app_name">AMindfullQuit</string>
 
     <string name="settings_title">Settings</string>
+    <string name="edit">Edit</string>
+
+
+    <string-array name="currency_array">
+        <item>€</item>
+        <item>$</item>
+        <item>£</item>
+        <item>*</item>
+    </string-array>
+
 </resources>

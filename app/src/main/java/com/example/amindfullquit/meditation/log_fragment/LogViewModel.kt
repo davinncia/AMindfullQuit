@@ -66,14 +66,14 @@ class LogViewModel : ViewModel() {
         for (i in sessions){
             totalTime += i.minutes
         }
-        data.add(LogDataUi("Total min", totalTime))
+        data.add(LogDataUi("Total min", totalTime.toString()))
 
         //MAX TIME
-        data.add(LogDataUi("Max time", getLongestSessionTime(sessions)))
+        data.add(LogDataUi("Max time", getLongestSessionTime(sessions).toString()))
 
         //AVERAGE TIME
         val averageTime = totalTime / sessions.size
-        data.add(LogDataUi("Average time", averageTime))
+        data.add(LogDataUi("Average time", averageTime.toString()))
 
         return data
     }
@@ -87,13 +87,13 @@ class LogViewModel : ViewModel() {
         for (i in sessions) {
             //VIEW HEIGHT
             val height = (maxHeight / maxTime * i.minutes)
-            //DESCRIPTION
-            val simpleFormat = SimpleDateFormat("EEE  FF  MMM", Locale.getDefault())
+            //DATE
+            val simpleFormat = SimpleDateFormat("EEE  dd  MMM", Locale.getDefault())
             val date = simpleFormat.format(i.creationTimeStamp)
-            val description = date + "\n" + i.minutes + "min"
 
-            chartItems.add(ChartItemUi(description, i.minutes, height))
+            chartItems.add(ChartItemUi(date, i.minutes, height))
         }
+
         chartItemsLiveData.value = chartItems
     }
 

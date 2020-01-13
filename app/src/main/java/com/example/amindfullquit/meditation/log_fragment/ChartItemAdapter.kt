@@ -11,7 +11,7 @@ class ChartItemAdapter(private var chartItems: List<ChartItemUi>,
                        private val listener: ChartItemClickListener)
     : RecyclerView.Adapter<ChartItemAdapter.ChartItemViewHolder>() {
 
-    private var barWidth = 100
+    var barWidth = 80
     var isZooming = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChartItemViewHolder {

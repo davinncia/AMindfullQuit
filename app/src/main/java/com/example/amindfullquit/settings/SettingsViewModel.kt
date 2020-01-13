@@ -17,8 +17,12 @@ class SettingsViewModel(private val preferencesRepo: PreferencesRepository) : Vi
         return@map arrayOf(calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH])
     }
 
-    //Previous cigarettes quantity
+
     val previousConsumption = preferencesRepo.previousConsumptionLiveData()
+    val cigarettesPerPack = preferencesRepo.cigarettesPerPackLiveData()
+    val packPrice = preferencesRepo.packPriceLiveData()
+    val currency = preferencesRepo.currencyLiveData()
+
 
     fun updateDefaultCigarettesNumber(i: Int){
         preferencesRepo.updateDefaultConsumption(i)
@@ -31,5 +35,17 @@ class SettingsViewModel(private val preferencesRepo: PreferencesRepository) : Vi
 
     fun updatePreviousCigarettesNumber(i: Int){
         preferencesRepo.updatePreviousConsumption(i)
+    }
+
+    fun updateCigarettesNumberPerPack(i: Int){
+        preferencesRepo.updateCigarettesPerPack(i)
+    }
+
+    fun updatePackPrice(i: Float){
+        preferencesRepo.updatePackPrice(i)
+    }
+
+    fun updateCurrency(symbol: String){
+        preferencesRepo.updateCurrency(symbol)
     }
 }
