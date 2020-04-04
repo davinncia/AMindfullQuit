@@ -82,6 +82,7 @@ class PreferencesRepository private constructor(context: Context) {
 
     fun updateStartingTime(timeStamp: Long){
         smokingPrefs.edit().putLong(START_TIME_KEY, timeStamp).apply()
+        //TODO: clear db (?)
     }
 
     fun updateDefaultConsumption(quantity: Int){

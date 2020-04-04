@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.amindfullquit.ChartOnScaleGestureListener
 import com.example.amindfullquit.R
 import com.example.amindfullquit.RoundDataAdapter
+import com.example.amindfullquit.di.ViewModelFactory
 
 class LogFragment : Fragment(), ChartItemAdapter.ChartItemClickListener {
 
@@ -41,13 +42,17 @@ class LogFragment : Fragment(), ChartItemAdapter.ChartItemClickListener {
         initDataRecyclerView(rootView)
         initChartRecyclerView(rootView)
 
-        val viewModel = ViewModelProviders.of(this).get(LogViewModel::class.java)
+        val factory = ViewModelFactory.getInstance(requireActivity().application)
+        val viewModel = ViewModelProviders.of(this, factory).get(LogViewModel::class.java)
+
         viewModel.getChartItems().observe(this, Observer { items ->
             chartItems = ArrayList(items)
             chartAdapter.populateChart(chartItems)
         })
 
-        viewModel.logDataLiveData.observe(this, Observer { logDataAdapter.populateData(it) })
+        viewModel.logDataLiveData.observe(this, Observer {
+            logDataAdapter.populateData(it)
+        })
 
         chartRecyclerView.dimensions{ h, _ ->
             viewModel.setMaxBarHeight(h)
@@ -66,16 +71,15 @@ class LogFragment : Fragment(), ChartItemAdapter.ChartItemClickListener {
         val helper = LinearSnapHelper()
         helper.attachToRecyclerView(recyclerView)
 
-        logDataAdapter =
-            RoundDataAdapter(requireContext())
+        logDataAdapter = RoundDataAdapter(requireContext())
 
         recyclerView.apply {
             setHasFixedSize(true)
             adapter = logDataAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
-
     }
+
     private fun initChartRecyclerView(rootView: View){
 
         chartRecyclerView = rootView.findViewById(R.id.recycler_view_chart_meditation)

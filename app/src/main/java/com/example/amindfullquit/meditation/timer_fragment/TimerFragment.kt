@@ -6,10 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.example.amindfullquit.R
+import com.example.amindfullquit.di.ViewModelFactory
 
 
 class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
+    //TODO: keep screen awake
+    //TODO: can't start if 0
+
+    private lateinit var viewModel: TimerViewModel
 
     //DATA
     private var isCounting = false
@@ -41,6 +48,9 @@ class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
         pauseButton.setOnClickListener { handleButtonsClick(it) }
         stopButton.setOnClickListener { handleButtonsClick(it) }
 
+        viewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(requireActivity().application))
+            .get(TimerViewModel::class.java)
+
         // Inflate the layout for this fragment
         return rootView
     }
@@ -49,6 +59,8 @@ class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
 
         when(view.id){
             R.id.btn_start_meditation -> {
+                viewModel.setMeditationLength(progressView.text.toString().toInt())
+
                 isCounting = true
                 seekCircle.startCountDown()
                 startButton.visibility = View.INVISIBLE
@@ -78,7 +90,7 @@ class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
                 progressView.visibility = View.VISIBLE
                 isCounting = false
                 seekCircle.stopCountDown()
-                //Save time done
+                //Save time done (?)
             }
         }
     }
@@ -88,6 +100,8 @@ class TimerFragment : Fragment(), SeekCircle.OnProgressChangeListener {
         progressView.text = "$progress"
 
         if (isCounting && progress == 0){ //Finished
+            viewModel.saveSession()
+
             pauseButton.visibility = View.GONE
             stopButton.visibility = View.GONE
             progressView.visibility = View.VISIBLE

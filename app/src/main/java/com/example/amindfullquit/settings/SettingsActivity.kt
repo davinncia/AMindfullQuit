@@ -1,6 +1,7 @@
 package com.example.amindfullquit.settings
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -195,7 +196,9 @@ class SettingsActivity : AppCompatActivity() {
 
         val listener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
             //Careful : month starts at 0 in Calendar
-            //TODO: Warn user
+            //TODO: Warning dialog
+            Toast.makeText(this, "Deleting...!", Toast.LENGTH_SHORT).show()
+
             viewModel.updateStartingTime(year, month, day)
         }
 

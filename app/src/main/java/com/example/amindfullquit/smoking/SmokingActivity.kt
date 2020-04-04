@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -18,13 +19,13 @@ import com.example.amindfullquit.ChartOnScaleGestureListener.ZoomListener
 import com.example.amindfullquit.R
 import com.example.amindfullquit.RoundDataAdapter
 import com.example.amindfullquit.di.ViewModelFactory
-import com.example.amindfullquit.meditation.log_fragment.LogDataUi
 import com.example.amindfullquit.settings.SettingsActivity
 
 class SmokingActivity : AppCompatActivity(), SmokingChartAdapter.ItemClickListener {
 
     private lateinit var viewModel: SmokingDataViewModel
 
+    //VIEW
     private lateinit var chartRecyclerView: RecyclerView
     private lateinit var chartAdapter: SmokingChartAdapter
     private lateinit var dataAdapter: RoundDataAdapter
@@ -33,6 +34,7 @@ class SmokingActivity : AppCompatActivity(), SmokingChartAdapter.ItemClickListen
     private lateinit var editButton: Button
 
     //VALUES
+    private var currentSelection: SmokingChartItemUi? = null
     private var cigarettesQuantity = 0
 
 
@@ -138,8 +140,9 @@ class SmokingActivity : AppCompatActivity(), SmokingChartAdapter.ItemClickListen
         val builder = AlertDialog.Builder(this)
         builder.setView(picker)
         builder.setPositiveButton("Ok") { dialog: DialogInterface, _ ->
-
-            //ViewModel stuff
+            currentSelection?.let {
+                viewModel.updateSmokingData(it.timeStamp, picker.value)
+            }
             dialog.dismiss()
         }
 
@@ -186,6 +189,7 @@ class SmokingActivity : AppCompatActivity(), SmokingChartAdapter.ItemClickListen
     //                                         C L I C K S
     //-------------------------------------------------------------------------------------------//
     override fun onChartItemClick(chartItem: SmokingChartItemUi) {
+        currentSelection = chartItem
         chartDetailsTextView.text = chartItem.date
         cigarettesQuantity = chartItem.cigaretteNbr
         findViewById<TextView>(R.id.tv_quantity_chart_smoking).text = cigarettesQuantity.toString()

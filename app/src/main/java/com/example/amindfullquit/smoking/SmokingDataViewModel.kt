@@ -4,27 +4,29 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.amindfullquit.meditation.log_fragment.LogDataUi
 import com.example.amindfullquit.repository.PreferencesRepository
+import com.example.amindfullquit.repository.SmokingDataRepository
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.roundToInt
 
-class SmokingDataViewModel(val preferencesRepo: PreferencesRepository) : ViewModel() {
+class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
+                           private val smokingDataRepo: SmokingDataRepository) : ViewModel() {
+
+    //TODO: empty / starting view
+    private val dbDataLiveData = smokingDataRepo.allData
+    //private val userDataLiveData = MutableLiveData<List<SmokingData>>()
+    private val maxViewHeightLiveData = MutableLiveData<Int>()
 
     private val chartItemsUi = MediatorLiveData<List<SmokingChartItemUi>>()
-
     private val roundDataItemUi = MediatorLiveData<List<LogDataUi>>()
-    val cigarettesAvoidedLiveData: LiveData<List<LogDataUi>> = roundDataItemUi
 
+    val cigarettesAvoidedLiveData: LiveData<List<LogDataUi>> = roundDataItemUi
     private val maxQuantityMutable = MutableLiveData<Int>()
     val maxQuantityLiveData: LiveData<Int> = maxQuantityMutable
 
-    private val userDataLiveData = MutableLiveData<List<SmokingData>>()
-
-    private val maxHeightLiveData = MutableLiveData<Int>()
 
     //PREFERENCES
-    //TODO Theses will be values
     private val defaultConsumptionLiveData = preferencesRepo.defaultConsumptionLiveData()
     private val startingTimeLiveData = preferencesRepo.startingTimeLiveData()
     private val previousConsumptionLiveData = preferencesRepo.previousConsumptionLiveData()
@@ -33,67 +35,67 @@ class SmokingDataViewModel(val preferencesRepo: PreferencesRepository) : ViewMod
 
 
     init {
-        chartItemsUi.addSource(startingTimeLiveData) {
-            fetchSmokingData(it)
-        }
+        //userDataLiveData = smokingDataRepo.allData
 
         //CHART ITEMS TRIGGERING
         //View Height & Db data as sources. Trigger only when all variables are set
-        chartItemsUi.addSource(userDataLiveData) {
-            if (maxHeightLiveData.value != null && defaultConsumptionLiveData.value != null) {
+        chartItemsUi.addSource(dbDataLiveData) {
+            if (enoughDataToProceed()) {
                 mapSmokingChartItems(
-                    ArrayList(it), maxHeightLiveData.value!!,
+                    ArrayList(it), maxViewHeightLiveData.value!!,
                     startingTimeLiveData.value!!, defaultConsumptionLiveData.value!!
                 )
             }
         }
 
-        chartItemsUi.addSource(maxHeightLiveData) {
-            if (userDataLiveData.value != null && defaultConsumptionLiveData.value != null) {
+        chartItemsUi.addSource(maxViewHeightLiveData) {
+            if (enoughDataToProceed()) {
                 mapSmokingChartItems(
-                    ArrayList(userDataLiveData.value!!), it,
+                    ArrayList(dbDataLiveData.value!!), it,
                     startingTimeLiveData.value!!, defaultConsumptionLiveData.value!!
                 )
             }
         }
 
+        //Preferences as source
         chartItemsUi.addSource(preferencesRepo.prefHasChanged) {
-            if (userDataLiveData.value == null) return@addSource
+            if (!enoughDataToProceed()) return@addSource
 
             mapSmokingChartItems(
-                ArrayList(userDataLiveData.value!!), maxHeightLiveData.value!!,
+                ArrayList(dbDataLiveData.value!!), maxViewHeightLiveData.value!!,
                 startingTimeLiveData.value!!, defaultConsumptionLiveData.value!!
             )
         }
 
     }
 
+    private fun enoughDataToProceed() = (dbDataLiveData.value != null && maxViewHeightLiveData.value != null)
+
+
     //-------------------------------------------------------------------------------------------//
     //                                     D A T A   B A S E
     //-------------------------------------------------------------------------------------------//
-    private fun fetchSmokingData(startingTime: Long) {
-        //Save starting day on database creation
-
-        //Getting SmokingData db
-        //60_000 * 60 * 24 = 86_400_000 = One day
-        val dbList = arrayListOf( //DEBUG
-            SmokingData(startingTime + 86_400_000, 10), //2nd day
-            SmokingData(startingTime + 86_400_000 * 3, 10) //4th day
-        )
-
-        userDataLiveData.value = dbList
+    fun updateSmokingData(timeStamp: Long, quantity: Int) {
+        viewModelScope.launch {
+            //Check if exist in db -> update
+            val daysStored = dbDataLiveData.value!!.map { it.creationTimeStamp }
+            if (daysStored.contains(timeStamp)) {
+                smokingDataRepo.update(SmokingData(timeStamp, quantity))
+            } else {
+                //Not stored -> insert
+                smokingDataRepo.insert(SmokingData(timeStamp, quantity))
+            }
+        }
     }
-
     //-------------------------------------------------------------------------------------------//
     //                                         C H A R T
     //-------------------------------------------------------------------------------------------//
     //Chart items construction from data
+    //TODO: find a solution better than mapping everything on modif ?
     private fun mapSmokingChartItems(
         dbList: ArrayList<SmokingData>, maxHeight: Int,
         startingTime: Long, defaultConsumption: Int
     ) {
-
-        Log.d("debuglog", "Mapped")
         val dataUi = ArrayList<SmokingChartItemUi>()
         val dayNbr = calculateDaysNbr()
 
@@ -102,19 +104,21 @@ class SmokingDataViewModel(val preferencesRepo: PreferencesRepository) : ViewMod
 
         for (i in 0..dayNbr) {
 
+            //TODO: something wrong with timeStamp... One precise is enough
             if (dbList.size == 0 || ((dbList[0].creationTimeStamp - startingTime) / 86_400_000).toInt() != i) {
-                //Day not in data base
-                var height = (maxHeight / maxConsumption * defaultConsumption)
+                //Day is not in data base -> create default smoking data
+                var height = (maxHeight / maxConsumption) * defaultConsumption
                 if (height == 0) height = 25 //So it's still visible in chart
                 dataUi.add(
                     SmokingChartItemUi(
-                        (dayNbr * 86_400_000L).toString(),
+                        startingTime + i * 86_400_000,
+                        formatDateString(startingTime + i * 86_400_000),
                         defaultConsumption,
                         height
                     )
                 )
             } else {
-                //Day in database
+                //Day is in database
                 //HEIGHT
                 var height = (maxHeight / maxConsumption * dbList[0].cigaretteNbr)
                 if (height == 0) height = 25
@@ -122,14 +126,16 @@ class SmokingDataViewModel(val preferencesRepo: PreferencesRepository) : ViewMod
                 //DESCRIPTION
                 val description = formatDateString(dbList[0].creationTimeStamp)
 
-                dataUi.add(SmokingChartItemUi(description, dbList[0].cigaretteNbr, height))
+                dataUi.add(SmokingChartItemUi(
+                    dbList[0].creationTimeStamp, description, dbList[0].cigaretteNbr, height)
+                )
                 dbList.removeAt(0)
             }
 
         }
         chartItemsUi.value = dataUi
 
-        mapRoundDataItems(userDataLiveData.value!!, dayNbr)
+        mapRoundDataItems(dbDataLiveData.value!!, dayNbr)
     }
 
     private fun calculateDaysNbr(): Int {
@@ -138,7 +144,6 @@ class SmokingDataViewModel(val preferencesRepo: PreferencesRepository) : ViewMod
     }
 
     private fun formatDateString(timeStamp: Long): String {
-
         val dateFormat = SimpleDateFormat("EEE dd MMM", Locale.getDefault())
         return dateFormat.format(timeStamp)
     }
@@ -149,15 +154,13 @@ class SmokingDataViewModel(val preferencesRepo: PreferencesRepository) : ViewMod
             if (data.cigaretteNbr > max)
                 max = data.cigaretteNbr
         }
-        return max
+        return if (max == 0) 1 else max
     }
 
     //-------------------------------------------------------------------------------------------//
     //                                  R O U N D   D A T A
     //-------------------------------------------------------------------------------------------//
     private fun mapRoundDataItems(dbList: List<SmokingData>, days: Int) {
-
-        //TODO: launches 3 times.... Make a generic event live data "preferencesChanged"
         //Because it's getting way to complicated
 
         Log.d("debuglog", "MAPPING LOG")
@@ -200,7 +203,7 @@ class SmokingDataViewModel(val preferencesRepo: PreferencesRepository) : ViewMod
     //                                 G E T T E R S  /  S E T T E R S
     //-------------------------------------------------------------------------------------------//
     fun setMaxBarHeight(viewHeight: Int) {
-        maxHeightLiveData.value = viewHeight - 16
+        maxViewHeightLiveData.value = viewHeight - 16
     }
 
     fun getSmokingChartItems(): LiveData<List<SmokingChartItemUi>> {

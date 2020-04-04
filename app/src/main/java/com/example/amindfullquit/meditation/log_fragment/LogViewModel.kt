@@ -1,8 +1,10 @@
 package com.example.amindfullquit.meditation.log_fragment
 
+import android.app.Application
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import com.example.amindfullquit.meditation.MeditationSession
+import com.example.amindfullquit.repository.MeditationSessionRepository
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -11,9 +13,10 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class LogViewModel : ViewModel() {
+class LogViewModel(application: Application, meditationRepo: MeditationSessionRepository)
+    : AndroidViewModel(application) {
 
-    private val sessionsLiveData = MutableLiveData<List<MeditationSession>>()
+    private val sessionsLiveData = meditationRepo.allSessions
 
     private val chartItemsLiveData = MediatorLiveData<List<ChartItemUi>>()
     val logDataLiveData = Transformations.map(sessionsLiveData) {
@@ -23,9 +26,6 @@ class LogViewModel : ViewModel() {
     private val maxHeightLiveData = MutableLiveData<Int>()
 
     init {
-        //Fetch from database
-        loadSessions()
-
         //Making sure both view height & sessions are available to map
 
         chartItemsLiveData.addSource(sessionsLiveData, Observer {
@@ -39,46 +39,43 @@ class LogViewModel : ViewModel() {
         })
     }
 
-    fun getChartItems(): LiveData<List<ChartItemUi>>{
-        return chartItemsLiveData
-    }
-
-    private fun loadSessions(){
-
-        val sessions = arrayListOf(
-            MeditationSession(17268276, 10),
-            MeditationSession(17268276, 12),
-            MeditationSession(17268276, 6),
-            MeditationSession(17268276, 11),
-            MeditationSession(17268276, 10),
-            MeditationSession(17268276, 12),
-            MeditationSession(17268276, 6),
-            MeditationSession(17268276, 11)
-        )
-        sessionsLiveData.value = sessions
-    }
-
+    //-------------------------------------------------------------------------------------------//
+    //                                  R O U N D   D A T A
+    //-------------------------------------------------------------------------------------------//
     private fun mapLogData(sessions: List<MeditationSession>): List<LogDataUi>{
         val data = ArrayList<LogDataUi>()
 
         //TOTAL TIME
         var totalTime = 0
+        var valueStr: String
         for (i in sessions){
             totalTime += i.minutes
         }
-        data.add(LogDataUi("Total min", totalTime.toString()))
+        valueStr = if (totalTime > 60) {
+            val hours = totalTime / 60
+            if (hours > 1) "$hours hours" else "$hours hour"
+        } else
+            "$totalTime min"
+
+        data.add(LogDataUi("Total time", valueStr))
 
         //MAX TIME
         data.add(LogDataUi("Max time", getLongestSessionTime(sessions).toString()))
 
         //AVERAGE TIME
-        val averageTime = totalTime / sessions.size
-        data.add(LogDataUi("Average time", averageTime.toString()))
+        if (sessions.isNotEmpty()) {
+            val averageTime = totalTime / sessions.size
+            data.add(LogDataUi("Average time", "$averageTime min"))
+        }
 
         return data
     }
 
+    //-------------------------------------------------------------------------------------------//
+    //                                        C H A R T
+    //-------------------------------------------------------------------------------------------//
     private fun mapChartItems(sessions: List<MeditationSession>, maxHeight: Int){
+        //TODO: starting date, empty days
 
         val chartItems = ArrayList<ChartItemUi>()
 
@@ -97,11 +94,9 @@ class LogViewModel : ViewModel() {
         chartItemsLiveData.value = chartItems
     }
 
-    fun setMaxBarHeight(viewHeight: Int){
-        maxHeightLiveData.value = viewHeight - 16
-    }
-
-    //HELPERS
+    //-------------------------------------------------------------------------------------------//
+    //                                      H E L P E R S
+    //-------------------------------------------------------------------------------------------//
     private fun getLongestSessionTime(sessions: List<MeditationSession>): Int{
 
         var maxTime = 0
@@ -111,5 +106,13 @@ class LogViewModel : ViewModel() {
             }
         }
         return maxTime
+    }
+
+    fun getChartItems(): LiveData<List<ChartItemUi>>{
+        return chartItemsLiveData
+    }
+
+    fun setMaxBarHeight(viewHeight: Int){
+        maxHeightLiveData.value = viewHeight - 16
     }
 }
