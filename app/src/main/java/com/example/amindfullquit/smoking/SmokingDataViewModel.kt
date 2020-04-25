@@ -104,7 +104,7 @@ class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
 
         for (i in 0..dayNbr) {
 
-            //TODO: something wrong with timeStamp... One precise is enough
+
             if (dbList.size == 0 || ((dbList[0].creationTimeStamp - startingTime) / 86_400_000).toInt() != i) {
                 //Day is not in data base -> create default smoking data
                 var height = (maxHeight / maxConsumption) * defaultConsumption
@@ -176,7 +176,7 @@ class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
 
         val cigarettesAvoided = oldQuantity - actualQuantity
 
-        items.add(LogDataUi("Mindfullded", cigarettesAvoided.toString()))
+        items.add(LogDataUi("Mindfuled", String.format("%,d", cigarettesAvoided)))
 
         //MONEY SAVED
         if (cigarettesPerPackLiveData.value!! > 0) {

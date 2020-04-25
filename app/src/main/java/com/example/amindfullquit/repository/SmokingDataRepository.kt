@@ -2,6 +2,7 @@ package com.example.amindfullquit.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.room.Query
 import com.example.amindfullquit.database.MindfulRoomDatabase
 import com.example.amindfullquit.database.SmokingDao
 import com.example.amindfullquit.smoking.SmokingData
@@ -24,11 +25,16 @@ class SmokingDataRepository(application: Application) {
         smokingDao.deleteDataBefore(timeStamp)
     }
 
+    suspend fun clearData() {
+        smokingDao.clearData()
+    }
+
+
     companion object {
         private var INSTANCE: SmokingDataRepository? = null
 
         fun getInstance(application: Application): SmokingDataRepository {
-            INSTANCE?.let {
+            if (INSTANCE == null) {
                 synchronized(this) {
                     if (INSTANCE == null) INSTANCE = SmokingDataRepository(application)
                 }

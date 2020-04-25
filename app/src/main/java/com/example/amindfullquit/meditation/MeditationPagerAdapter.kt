@@ -8,8 +8,6 @@ import com.example.amindfullquit.meditation.timer_fragment.TimerFragment
 
 class MeditationPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAdapter(fm, behavior) {
 
-    private val NBR_PAGES = 2
-
     override fun getItem(position: Int): Fragment {
         return when(position){
             0 -> TimerFragment.newInstance()
@@ -19,5 +17,9 @@ class MeditationPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentState
     }
 
     override fun getCount(): Int = NBR_PAGES
+
+    companion object {
+        private const val NBR_PAGES = 2
+    }
 
 }

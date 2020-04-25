@@ -21,6 +21,7 @@ class MeditationActivity : AppCompatActivity() {
 
         val pagerAdapter = MeditationPagerAdapter(supportFragmentManager, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
         mPager.adapter = pagerAdapter
+        //TODO anim
 
         mTabLayout.setupWithViewPager(mPager)
 

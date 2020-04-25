@@ -9,16 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/NoActionBarTheme">
-        <activity android:name=".settings.SettingsActivity"/>
+        <activity android:name=".principles.PrinciplesActivity"></activity>
+        <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".smoking.SmokingActivity" />
         <activity android:name=".meditation.MeditationActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

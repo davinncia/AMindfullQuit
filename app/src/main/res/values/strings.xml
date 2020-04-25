@@ -3,6 +3,8 @@
 
     <string name="settings_title">Settings</string>
     <string name="edit">Edit</string>
+    <string name="cigarette_data">Cigarette Data</string>
+    <string name="meditation_data">Meditation data</string>
 
 
     <string-array name="currency_array">

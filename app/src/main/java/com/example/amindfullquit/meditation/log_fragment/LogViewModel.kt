@@ -53,7 +53,7 @@ class LogViewModel(application: Application, meditationRepo: MeditationSessionRe
         }
         valueStr = if (totalTime > 60) {
             val hours = totalTime / 60
-            if (hours > 1) "$hours hours" else "$hours hour"
+            if (hours > 1) String.format("%,d", hours) + " hours" else "$hours hour"
         } else
             "$totalTime min"
 

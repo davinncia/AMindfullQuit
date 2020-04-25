@@ -21,4 +21,7 @@ interface SmokingDao {
     @Query("DELETE FROM smoking_table WHERE creation_time < :startingDate")
     suspend fun deleteDataBefore(startingDate: Long)
 
+    @Query("DELETE FROM smoking_table")
+    suspend fun clearData()
+
 }

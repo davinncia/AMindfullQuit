@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.amindfullquit.meditation.MeditationActivity
+import com.example.amindfullquit.principles.PrinciplesActivity
 import com.example.amindfullquit.smoking.SmokingActivity
 import java.util.function.Function
 
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener {
     private fun openActivity(tag: String) {
 
         intent = when (tag) {
-            "PRINCIPLES" -> Intent(this, MeditationActivity::class.java)
+            "PRINCIPLES" -> PrinciplesActivity.newIntent(this)
             "MEDITATE" -> Intent(this, MeditationActivity::class.java)
             "DATA" -> Intent(this, SmokingActivity::class.java)
             "CODER" -> Intent(this, MeditationActivity::class.java)

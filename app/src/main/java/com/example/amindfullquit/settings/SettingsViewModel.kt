@@ -39,9 +39,10 @@ class SettingsViewModel(
     }
 
     fun updateStartingTime(year: Int, month: Int, day: Int) {
-        deleteDataBefore(year, month, day)
+//        deleteDataBefore(year, month, day)
         val startCalendar = GregorianCalendar(year, month, day)
         preferencesRepo.updateStartingTime(startCalendar.timeInMillis)
+        clearData()
     }
 
     fun updatePreviousCigarettesNumber(i: Int) {
@@ -61,13 +62,19 @@ class SettingsViewModel(
     }
 
     //DB
+    private fun clearData() {
+        viewModelScope.launch {
+            smokingRepo.clearData()
+        }
+    }
+
     private fun deleteDataBefore(year: Int, month: Int, day: Int) {
         val cal = Calendar.getInstance()
         cal.set(year, month, day)
         val minTimeStamp = cal.timeInMillis
-
         viewModelScope.launch {
             smokingRepo.deleteDataBefore(minTimeStamp)
         }
+
     }
 }

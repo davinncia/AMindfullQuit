@@ -21,4 +21,15 @@
     <color name="endBlue">#B1D5F5</color>
     <color name="myRed">#FCB6B6</color>
     <color name="endRed">#FFD5D5</color>
+
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorTransparentWhite">#cccccc</color>
+
+    <!-- Array of colors that will be used by PrincipleViewPager as background colors -->
+    <array name="colorPagesViewPager">
+        <item>#EDD9CF</item>
+        <item>#BED4D6</item>
+        <item>#ADCEB7</item>
+        <item>#F7CF8B</item>
+    </array>
 </resources>
