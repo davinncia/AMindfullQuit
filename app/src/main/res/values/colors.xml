@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="colorAccentStart">#D6638B</color>
-    -->
 
+    <!--
     <color name="colorPrimary">#8C7078</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#8C7078</color>
@@ -22,14 +17,26 @@
     <color name="myRed">#FCB6B6</color>
     <color name="endRed">#FFD5D5</color>
 
-    <color name="colorWhite">#ffffff</color>
-    <color name="colorTransparentWhite">#cccccc</color>
-
-    <!-- Array of colors that will be used by PrincipleViewPager as background colors -->
+    Array of colors that will be used by PrincipleViewPager as background colors
     <array name="colorPagesViewPager">
         <item>#EDD9CF</item>
         <item>#BED4D6</item>
         <item>#ADCEB7</item>
         <item>#F7CF8B</item>
     </array>
+    -->
+
+    <color name="colorPrimary">#64A9BC</color>
+    <color name="colorPrimaryDark">#1A7CA6</color>
+    <color name="colorPrimaryLight">#8ED0E8</color>
+
+    <color name="colorAccent">#DB6868</color>
+    <color name="colorAccentDark">#A61A1A</color>
+    <color name="colorAccentLight">#FFA0A0</color>
+
+    <color name="colorSoftBlack">#555555</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorTransparentWhite">#cccccc</color>
+
+
 </resources>

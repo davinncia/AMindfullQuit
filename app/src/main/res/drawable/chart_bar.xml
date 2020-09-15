@@ -11,8 +11,8 @@
 
     <gradient
         android:angle="45"
-        android:endColor="@color/endBlue"
-        android:startColor="@color/myBlue"
+        android:endColor="@color/colorPrimaryLight"
+        android:startColor="@color/colorPrimaryDark"
         android:type="linear" />
 
     <stroke

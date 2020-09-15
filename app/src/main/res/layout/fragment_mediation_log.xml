@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/myBlue"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context=".meditation.log_fragment.LogFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_meditation_log"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="@string/meditation_data"
-        app:titleTextColor="@android:color/white"
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/bouddhist"
+        app:layout_constraintBottom_toTopOf="@id/frame_layout_meditation_log"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <FrameLayout
+        android:id="@+id/frame_layout_meditation_log"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/frame_top_rounded"
@@ -48,43 +47,71 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:textStyle="italic"
-        app:layout_constraintTop_toTopOf="@+id/recycler_view_chart_meditation"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/frame_chart_meditation"
         tools:text="22" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_chart_meditation"
+    <FrameLayout
+        android:id="@+id/frame_chart_meditation"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toBottomOf="@id/recycler_view_log_data_meditation"
         app:layout_constraintBottom_toTopOf="@id/tv_date_chart_meditation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_log_data_meditation">
+
+        <!--
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_chart_meditation"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_date_chart_meditation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_log_data_meditation" />
+-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_chart_meditation"
+            android:layout_width="376dp"
+            android:layout_height="327dp"
+            android:visibility="visible" />
+
+        <include
+            android:visibility="gone"
+            android:id="@+id/layout_empty_view_chart_meditation"
+            layout="@layout/empty_view_meditation_graph"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/text_view_chart_legend_min_meditation"
         android:layout_width="24dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
+        android:text="0"
         android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="@+id/recycler_view_chart_meditation"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="0" />
+        app:layout_constraintBottom_toBottomOf="@+id/frame_chart_meditation"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_date_chart_meditation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="4dp"
         android:gravity="center_horizontal"
+        android:padding="4dp"
         android:textStyle="italic"
-        tools:text="02/20/2019 Session n°1"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_view_chart_meditation"
         app:layout_constraintBottom_toTopOf="@+id/tv_quantity_chart_meditation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frame_chart_meditation"
+        tools:text="02/20/2019 Session n°1" />
 
     <TextView
         android:id="@+id/tv_quantity_chart_meditation"

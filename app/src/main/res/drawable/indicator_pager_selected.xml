@@ -9,7 +9,7 @@
             android:useLevel="false">
 
             <solid
-                android:color="@color/colorPrimary"/>
+                android:color="@color/colorPrimaryDark"/>
         </shape>
     </item>
 

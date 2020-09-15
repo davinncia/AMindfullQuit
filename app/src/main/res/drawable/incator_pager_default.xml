@@ -9,7 +9,7 @@
         android:useLevel="false">
 
         <solid
-            android:color="@color/colorAccent"/>
+            android:color="@color/colorPrimary"/>
     </shape>
 </item>
 

@@ -14,4 +14,119 @@
         <item>*</item>
     </string-array>
 
+    <!-- P R I N C I P L E S -->
+    <string name="mindful_smoking">MindFul Smoking</string>
+    <string name="rain">R.A.I.N.</string>
+    <string name="sitting_meditation">Sitting Meditation</string>
+    <string name="every_day_activities">Everyday Activities</string>
+
+    <string name="welcome">
+        <big><u>Welcome</u></big> <i>to</i><br />
+        <b>Android</b>!
+    </string>
+
+    <!-- D E S C  I P T I O N S -->
+    <string name="mindful_smoking_description">
+        Developing awareness of your smoking habits and breaking noxious automatisms
+    </string>
+
+    <string name="rain_description">
+        Recognize - Accept - Investigate - Note
+    </string>
+
+    <string name="sitting_meditation_description">
+        Reinforcing your mental strength
+    </string>
+
+    <string name="daily_activities_description">
+        Develop a long term habit of being mindful by incorporating it in your everyday life
+    </string>
+
+    <!-- P R I N C I P L E S -->
+    <string name="mindful_instructions">
+        <![CDATA[
+        <i>This step is to consider only if you haven\'t completely stopped your cigarette consumption yet.</i>
+        <br/>
+        Along the years and thousands of cigarettes smoked in our life, the act of smoking has become
+        an habit.
+        An habit is a behaviour we tend to perform without any conscious effort, simply responding to
+        automatisms we have developed carrying out an action for a numerous amount of repetitions.
+        The goal of this exercise is to break up this pattern. For that, we only have to bring back to
+        our attention the act of smoking in itself, so that it becomes again an active behaviour on which we
+        have control rather something we execute in the back of our mind.
+       <br/>
+       <br/>
+       Here\'s an example of a "mindful smoke" to illustrate the concept, of course you don\'t have to
+       follow everything to the word, adapt your practice given your own perception.
+       <br/> <i>
+       While I grab a cigarette out of my pack, I take a close look at it, inspecting wrinkles in the
+       paper, there is a slight bend in the form. As I light it up, the flame heats my skin. I can
+       hear the tobacco crackling and feel the bitter taste of smoke running through my mouth. I
+       imagine the smoke spreading in my lungs, as I exhale, I feel the air hitting my palate, etc…
+        </i><br/>
+        <br/>
+        Your mind will wonder while you practice, don\'t worry it is perfectly normal. Once you\'ve realized
+        that you got lost in your train of thoughts just gently come back to mindfulness.
+        <br/>
+        <br/>
+        After a few days of this exercise, or even a few attempts, you might realize that you avoided
+        a couple of cigarettes during the day, the ones you used to light up without even noticing.
+        Very often, people realize how bad a cigarette tastes if you\'re paying attention, enough to
+        bring the question "Why am I smoking by the way ?".
+        <b>smoking</b>
+        !]]></string>
+
+    <string name="rain_instructions">
+        <![CDATA[
+        A method based on scientific researches which has
+        been proven highly efficient in several studies.
+        <i>Refining our perception of cravings</i><br/>
+        <big><b><u>Recognize</u></b></big>
+        Firstly, we have to train our ability to recognize when cravings occurs. It may sometimes be
+        obvious: while you see someone lighting a cigarette in front of you, you suddenly feel the
+        urge to do the same. But it can also be a subtle sensation, maybe feeling a bit grumpy waking
+        up this morning.<br/>
+        Either way, we want to bring this feeling to our awareness rather than letting it silently affect us.
+        The goal here isn\'t trying to shut it down, thought you might be able to do so for a certain period
+        of time, it will eventually resurface ten times stronger. We do not resist the wave, we surf on it.
+        <br/>
+        <br/>
+        <big><b><u>Accept<u><b/></big>
+        Needless to say, easier said than done.
+
+        <i>Refining our perception of cravings</i><br/>
+        <big><b><u>Recognize</u></b></big>
+        Firstly, we have to train our ability to recognize when cravings occurs. It may sometimes be
+        obvious: while you see someone lighting a cigarette in front of you, you suddenly feel the
+        urge to do the same. But it can also be a subtle sensation, maybe feeling a bit grumpy waking
+        up this morning.<br/>
+        Either way, we want to bring this feeling to our awareness rather than letting it silently affect us.
+        The goal here isn\'t trying to shut it down, thought you might be able to do so for a certain period
+        of time, it will eventually resurface ten times stronger. We do not resist the wave, we surf on it.
+        <br/>
+        <br/>
+        <big><b><u>Accept<u><b/></big>
+        Needless to say, easier said than done.
+        ]]>
+    </string>
+
+    <string name="sitting_instructions">
+        <![CDATA[
+        <big><u>Welcome</u></big> <i>to</i><br />
+        <b>sitting</b>!
+        The benefits of a daily meditation practice are well documented
+        by science, including cognition abilities, emotional control and health improvement
+        ]]>
+    </string>
+
+    <string name="everyday_instructions">
+        <![CDATA[
+        <big><u>Welcome</u></big> <i>to</i><br />
+        <b>everyday</b>!
+        ]]>
+    </string>
+    <string name="info">Info</string>
+    <string name="empty_meditation_graph">Complete your first meditation to see your progress</string>
+    <string name="empty_smoking_graph">Go to settings to start logging your progress</string>
+
 </resources>

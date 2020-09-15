@@ -12,34 +12,46 @@
         android:padding="8dp"
         tools:context=".settings.SettingsActivity">
 
+        <TextView
+            android:id="@+id/text_view_title_nowadays_consumption_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center_horizontal"
+            android:text="Nowadays consumption"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_settings"
+            android:src="@drawable/ic_quantity"
             app:layout_constraintBottom_toBottomOf="@+id/textView_content1_settings"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title1_settings" />
+            app:layout_constraintTop_toBottomOf="@id/text_view_title_nowadays_consumption_settings" />
 
         <TextView
             android:id="@+id/title1_settings"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Default consumption"
+            android:text="Default cigarette quantity"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/text_view_default_consumption_settings"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/text_view_title_nowadays_consumption_settings" />
 
         <TextView
             android:id="@+id/textView_content1_settings"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Cigarettes count per day"
+            android:text="Automatic count per day"
             app:layout_constraintEnd_toStartOf="@+id/text_view_default_consumption_settings"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/title1_settings" />
@@ -51,7 +63,7 @@
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="@+id/textView_content1_settings"
             app:layout_constraintEnd_toStartOf="@+id/image_button_default_number_settings"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/title1_settings"
             tools:text="0" />
 
         <ImageButton
@@ -63,7 +75,7 @@
             android:src="@drawable/ic_arrow_right"
             app:layout_constraintBottom_toBottomOf="@+id/textView_content1_settings"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/title1_settings" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -71,7 +83,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:src="@drawable/ic_settings"
+            android:src="@drawable/ic_date"
             app:layout_constraintBottom_toBottomOf="@+id/textView_content2_settings"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -124,7 +136,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_margin="24dp"
-            android:background="@color/greenSoft"
+            android:background="@color/colorPrimaryLight"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_content2_settings" />
@@ -136,6 +148,7 @@
             android:layout_marginTop="24dp"
             android:gravity="center_horizontal"
             android:text="Past consumption"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/separator2_settings" />
@@ -145,7 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_settings"
+            android:src="@drawable/ic_quantity"
             app:layout_constraintBottom_toBottomOf="@+id/textView_content3_settings"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_view_title_past_consumption_settings" />
@@ -199,7 +212,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:src="@drawable/ic_settings"
+            android:src="@drawable/ic_cigarette_pack"
             app:layout_constraintBottom_toBottomOf="@+id/textView_content4_settings"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_button_previous_consumption_settings" />
@@ -253,7 +266,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:src="@drawable/ic_settings"
+            android:src="@drawable/ic_money"
             app:layout_constraintBottom_toBottomOf="@+id/textView_content5_settings"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView4" />
