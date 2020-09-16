@@ -1,20 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".developer.DeveloperActivity">
+    android:layout_height="match_parent">
 
-
-    <Button
-        android:id="@+id/btn_donate"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="DONATE"
-        android:layout_gravity="center"
-        />
+        android:orientation="vertical"
+        tools:context=".developer.DeveloperActivity">
 
-</LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@drawable/frame_bottom_rounded"
+            android:backgroundTint="@color/colorPrimary">
+
+            <ImageView
+                android:id="@+id/iv_man_waving_developer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_man_waving"
+                android:layout_marginStart="80dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/hi_there"
+                android:gravity="center"
+                android:textSize="28sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/iv_man_waving_developer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- P R E S E N T A T I O N -->
+            <TextView
+                android:id="@+id/tv_title_presentation_developer"
+                style="@style/Title"
+                android:text="@string/presentation"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_presentation_developer"
+                style="@style/ContentText"
+                android:text="@string/presentation_developer"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_presentation_developer"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_ref_one_developer"
+                style="@style/ContentText"
+                android:textSize="12sp"
+                android:text="@string/reference_one"
+                android:textStyle="italic"
+                android:padding="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_presentation_developer"
+                />
+
+            <TextView
+                android:id="@+id/tv_knowledge_developer"
+                style="@style/ContentText"
+                android:text="@string/pass_knwoledge_developer"
+                app:layout_constraintTop_toBottomOf="@id/tv_ref_one_developer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- C O N T A C T -->
+            <TextView
+                android:id="@+id/tv_title_contact_developer"
+                style="@style/Title"
+                android:text="@string/contact"
+                app:layout_constraintTop_toBottomOf="@+id/tv_knowledge_developer"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_contact__developer"
+                style="@style/ContentText"
+                android:text="@string/contact_developer"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_contact_developer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!--TODO: hyper link -->
+            <TextView
+                android:id="@+id/tv_mail_developer"
+                style="@style/ContentText"
+                android:text="@string/mail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_contact__developer"/>
+
+            <!-- D O N A T I O N  -->
+            <TextView
+                android:id="@+id/tv_title_donation_developer"
+                style="@style/Title"
+                android:text="@string/helping_hand"
+                app:layout_constraintTop_toBottomOf="@+id/tv_mail_developer"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_donation_developer"
+                style="@style/ContentText"
+                android:text="@string/donation_developer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_donation_developer"/>
+
+            <!-- C O F F E E   D O N A T I O N -->
+
+            <Button
+                android:id="@+id/btn_donation_coffee_developer"
+                android:layout_width="160dp"
+                android:layout_height="80dp"
+                android:background="@drawable/frame_rounded"
+                android:backgroundTint="@color/colorPrimary"
+                android:layout_margin="8dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_donation_developer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_donation_sandwich_developer"/>
+
+            <ImageView
+                android:id="@+id/iv_donation_coffee_developer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_coffee"
+                android:elevation="10dp"
+                app:layout_constraintTop_toTopOf="@id/btn_donation_coffee_developer"
+                app:layout_constraintBottom_toBottomOf="@id/btn_donation_coffee_developer"
+                app:layout_constraintStart_toStartOf="@id/btn_donation_coffee_developer"
+                app:layout_constraintEnd_toStartOf="@id/tv_price_donation_coffee_developer"/>
+
+            <TextView
+                android:id="@+id/tv_price_donation_coffee_developer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="32sp"
+                android:textColor="@android:color/black"
+                android:elevation="10dp"
+                tools:text="2€"
+                app:layout_constraintTop_toTopOf="@id/btn_donation_coffee_developer"
+                app:layout_constraintBottom_toBottomOf="@id/btn_donation_coffee_developer"
+                app:layout_constraintStart_toEndOf="@id/iv_donation_coffee_developer"
+                app:layout_constraintEnd_toEndOf="@id/btn_donation_coffee_developer"/>
+
+            <TextView
+                android:id="@+id/tv_coffee_donation_description_developer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:textStyle="bold|italic"
+                android:text="@string/buy_me_a_coffee"
+                app:layout_constraintStart_toStartOf="@id/btn_donation_coffee_developer"
+                app:layout_constraintEnd_toEndOf="@id/btn_donation_coffee_developer"
+                app:layout_constraintTop_toBottomOf="@id/btn_donation_coffee_developer"/>
+
+            <!-- S A N D W I C H   D O N A T I O N -->
+            <Button
+                android:id="@+id/btn_donation_sandwich_developer"
+                android:layout_width="160dp"
+                android:layout_height="80dp"
+                android:background="@drawable/frame_rounded"
+                android:backgroundTint="@color/colorPrimary"
+                android:layout_margin="8dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_donation_developer"
+                app:layout_constraintStart_toEndOf="@id/btn_donation_coffee_developer"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ImageView
+                android:id="@+id/iv_donation_sandwich_developer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_sandwich"
+                android:elevation="10dp"
+                app:layout_constraintTop_toTopOf="@id/btn_donation_sandwich_developer"
+                app:layout_constraintBottom_toBottomOf="@id/btn_donation_sandwich_developer"
+                app:layout_constraintStart_toStartOf="@id/btn_donation_sandwich_developer"
+                app:layout_constraintEnd_toStartOf="@id/tv_price_donation_sandwich_developer"/>
+
+            <TextView
+                android:id="@+id/tv_price_donation_sandwich_developer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="32sp"
+                android:textColor="@android:color/black"
+                tools:text="5€"
+                android:elevation="10dp"
+                app:layout_constraintTop_toTopOf="@id/btn_donation_sandwich_developer"
+                app:layout_constraintBottom_toBottomOf="@id/btn_donation_sandwich_developer"
+                app:layout_constraintStart_toEndOf="@id/iv_donation_sandwich_developer"
+                app:layout_constraintEnd_toEndOf="@id/btn_donation_sandwich_developer"/>
+
+
+            <TextView
+                android:id="@+id/tv_sandwich_donation_description_developer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:textStyle="bold|italic"
+                android:text="@string/buy_me_a_sandwich"
+                app:layout_constraintStart_toStartOf="@id/btn_donation_sandwich_developer"
+                app:layout_constraintEnd_toEndOf="@id/btn_donation_sandwich_developer"
+                app:layout_constraintTop_toBottomOf="@id/btn_donation_sandwich_developer"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+</ScrollView>

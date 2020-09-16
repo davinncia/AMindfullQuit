@@ -5,7 +5,12 @@
     <string name="edit">Edit</string>
     <string name="cigarette_data">Cigarette Data</string>
     <string name="meditation_data">Meditation data</string>
-
+    <string name="info">Info</string>
+    <string name="empty_meditation_graph">Complete your first meditation to see your progress</string>
+    <string name="empty_smoking_graph">Go to settings to start logging your progress</string>
+    <string name="presentation">Presentation</string>
+    <string name="hi_there">Hi there !</string>
+    <string name="mail">mail@mail.com</string>
 
     <string-array name="currency_array">
         <item>€</item>
@@ -13,6 +18,33 @@
         <item>£</item>
         <item>*</item>
     </string-array>
+
+    <!-- R E F E R E N C E S -->
+    <string name="reference_one">
+        Brewer, Judson A., et al. \"Mindfulness training for smoking cessation: results from a
+        randomized controlled trial.\" Drug and alcohol dependence 119.1-2 (2011): 72-80.
+    </string>
+
+    <!-- D E V E L O P E R -->
+    <string name="presentation_developer">
+        My name is Lucas, I stumbled across an article, during my master’s degree in Cognitive Sciences,
+        showing great results for smoking cessation using simple meditation techniques. In fact,
+        subjects showed greater success (31%) than using traditional smoking cessation programs (6%),
+        with fewer relapses and improved well-being !
+    </string>
+    <string name="pass_knwoledge_developer">
+        I then decided to pass on this knowledge, developing this mobile app on my free time.
+    </string>
+    <string name="contact_developer">
+        For any suggestions or to report bugs you can contact me via mail:
+    </string>
+    <string name="donation_developer">
+        I decided to let this app 100% free and without ads. If you’d like to support,
+        please consider making a small donation via GooglePlay.
+    </string>
+    <string name="buy_coffee">Buy me a coffee</string>
+    <string name="buy_sandwich">Buy me a sandwich</string>
+
 
     <!-- P R I N C I P L E S -->
     <string name="mindful_smoking">MindFul Smoking</string>
@@ -72,7 +104,7 @@
         After a few days of this exercise, or even a few attempts, you might realize that you avoided
         a couple of cigarettes during the day, the ones you used to light up without even noticing.
         Very often, people realize how bad a cigarette tastes if you\'re paying attention, enough to
-        bring the question "Why am I smoking by the way ?".
+        bring the question \"Why am I smoking by the way ?\".
         <b>smoking</b>
         !]]></string>
 
@@ -125,8 +157,11 @@
         <b>everyday</b>!
         ]]>
     </string>
-    <string name="info">Info</string>
-    <string name="empty_meditation_graph">Complete your first meditation to see your progress</string>
-    <string name="empty_smoking_graph">Go to settings to start logging your progress</string>
+    <string name="contact">Contact</string>
+    <string name="donation">Donation</string>
+    <string name="helping_hand">Helping hand</string>
+    <string name="buy_me_a_coffee">Buy me a coffee</string>
+    <string name="buy_me_a_sandwich">Buy me a sandwich</string>
+
 
 </resources>

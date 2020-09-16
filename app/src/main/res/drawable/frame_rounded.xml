@@ -6,10 +6,8 @@
         android:width="400dp"
         android:height="400dp" />
 
-    <corners
-        android:radius="16dp" />
+    <corners android:radius="16dp" />
 
-    <solid
-        android:color="#fff"/>
+    <solid android:color="#fff" />
 
 </shape>

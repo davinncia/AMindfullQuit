@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -49,6 +48,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="80dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -68,13 +68,14 @@
                 android:gravity="center_horizontal"
                 android:textColor="@android:color/black"
                 android:maxLines="4"
-                android:textSize="14sp"
+                android:textSize="@dimen/TextSizeMedium"
                 tools:text="Color Ipsum dolor"/>
 
             <TextView
                 android:id="@+id/tv_instructions_principles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/TextSizeSmall"
                 android:padding="8dp"
                 android:text="yoo\nyoo\nyoo\nyoo\nyoo\nyoo\nyoo\nyoo\nyoo\nyoo\nyoo\n" />
 

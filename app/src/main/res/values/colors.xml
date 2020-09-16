@@ -35,6 +35,7 @@
     <color name="colorAccentLight">#FFA0A0</color>
 
     <color name="colorSoftBlack">#555555</color>
+    <color name="colorShadow">#81CDCDCD</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorTransparentWhite">#cccccc</color>
 
