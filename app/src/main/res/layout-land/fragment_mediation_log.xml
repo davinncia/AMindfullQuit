@@ -9,6 +9,7 @@
     tools:context=".meditation.log_fragment.LogFragment">
 
     <ImageView
+        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/bouddhist"
@@ -26,11 +27,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline">
+        app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/recycler_view_log_data_meditation"
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -60,20 +62,7 @@
         app:layout_constraintBottom_toTopOf="@id/tv_date_chart_meditation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recycler_view_log_data_meditation">
-
-        <!--
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_chart_meditation"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toTopOf="@id/tv_date_chart_meditation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recycler_view_log_data_meditation" />
--->
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_chart_meditation"
