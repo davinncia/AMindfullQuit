@@ -13,8 +13,8 @@ android {
         applicationId "com.davinciapp.amindfullquit"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 2
-        versionName "2.0"
+        versionCode 3
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -53,7 +53,6 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
     //BILLING
-    implementation 'com.android.billingclient:billing:3.0.0'
     implementation 'com.android.billingclient:billing:3.0.0'
     implementation 'com.android.billingclient:billing-ktx:3.0.0'
 
