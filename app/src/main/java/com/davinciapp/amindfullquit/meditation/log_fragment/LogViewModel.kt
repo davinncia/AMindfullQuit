@@ -1,6 +1,7 @@
 package com.davinciapp.amindfullquit.meditation.log_fragment
 
 import android.app.Application
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import com.davinciapp.amindfullquit.meditation.MeditationSession
@@ -19,7 +20,9 @@ class LogViewModel(application: Application, meditationRepo: MeditationSessionRe
     private val maxSessionTime = MutableLiveData<Int>()
     val maxSessionLiveData = maxSessionTime
 
-    private val chartItemsLiveData = MediatorLiveData<List<ChartItemUi>>()
+    //Rmq: A mediator needs to be observed in unit test otherwise won't be updated #Schrodinger's cat
+    @VisibleForTesting
+    val chartItemsMediator = MediatorLiveData<List<ChartItemUi>>()
     val logDataLiveData = Transformations.map(sessionsLiveData) {
         mapLogData(it)
     }
@@ -29,12 +32,12 @@ class LogViewModel(application: Application, meditationRepo: MeditationSessionRe
     init {
         //Making sure both view height & sessions are available to map
 
-        chartItemsLiveData.addSource(sessionsLiveData, Observer {
+        chartItemsMediator.addSource(sessionsLiveData, Observer {
             if (maxHeightLiveData.value == null) return@Observer //Wait max height to be set
             else mapChartItems(it, maxHeightLiveData.value!!)
         })
 
-        chartItemsLiveData.addSource(maxHeightLiveData, Observer {
+        chartItemsMediator.addSource(maxHeightLiveData, Observer {
             if (sessionsLiveData.value == null) return@Observer //Wait for sessions to load
             else mapChartItems(sessionsLiveData.value!!, it)
         })
@@ -70,7 +73,7 @@ class LogViewModel(application: Application, meditationRepo: MeditationSessionRe
 
         //AVERAGE TIME
         if (sessions.isNotEmpty()) {
-            val averageTime = totalTime / sessions.size
+            val averageTime: Float = totalTime.toFloat() / sessions.size.toFloat()
             data.add(LogDataUi("Average", "$averageTime"))
         }
 
@@ -99,7 +102,7 @@ class LogViewModel(application: Application, meditationRepo: MeditationSessionRe
             chartItems.add(ChartItemUi(date, i.minutes, height))
         }
 
-        chartItemsLiveData.value = chartItems
+        chartItemsMediator.value = chartItems
     }
 
     //-------------------------------------------------------------------------------------------//
@@ -119,7 +122,7 @@ class LogViewModel(application: Application, meditationRepo: MeditationSessionRe
     }
 
     fun getChartItems(): LiveData<List<ChartItemUi>>{
-        return chartItemsLiveData
+        return chartItemsMediator
     }
 
     fun setMaxBarHeight(viewHeight: Int){

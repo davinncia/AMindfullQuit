@@ -39,7 +39,6 @@ class DeveloperActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.tv_price_donation_sandwich_developer).text = it
         }
 
-
         donateCoffeeButton.setOnClickListener { viewModel.setCoffeeBilling() }
         donateSandwichButton.setOnClickListener { viewModel.setSandwichBilling() }
 

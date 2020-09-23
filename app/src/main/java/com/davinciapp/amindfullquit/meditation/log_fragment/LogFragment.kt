@@ -45,6 +45,7 @@ class LogFragment : Fragment(), ChartItemAdapter.ChartItemClickListener {
         val factory = ViewModelFactory.getInstance(requireActivity().application)
         val viewModel = ViewModelProviders.of(this, factory).get(LogViewModel::class.java)
 
+
         //Empty view
         viewModel.emptyGraphLiveData.observe(viewLifecycleOwner, Observer { empty ->
             if (empty) {
