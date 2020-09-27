@@ -1,6 +1,6 @@
 package com.davinciapp.amindfullquit.smoking
 
-import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
 import com.davinciapp.amindfullquit.meditation.log_fragment.LogDataUi
 import com.davinciapp.amindfullquit.repository.PreferencesRepository
@@ -16,13 +16,15 @@ class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
                            private val smokingDataRepo: SmokingDataRepository) : ViewModel() {
 
     private val dbDataLiveData = smokingDataRepo.allData
-    //private val userDataLiveData = MutableLiveData<List<SmokingData>>()
     private val maxViewHeightLiveData = MutableLiveData<Int>()
 
-    private val chartItemsUi = MediatorLiveData<List<SmokingChartItemUi>>()
-    private val roundDataItemUi = MediatorLiveData<List<LogDataUi>>()
+    //Rmq: A mediator needs to be observed in unit test otherwise won't be updated #Schrodinger's cat
+    @VisibleForTesting
+    val chartItemsUiMediator = MediatorLiveData<List<SmokingChartItemUi>>()
+    @VisibleForTesting
+    val roundDataItemUi = MediatorLiveData<List<LogDataUi>>()
 
-    val cigarettesAvoidedLiveData: LiveData<List<LogDataUi>> = roundDataItemUi
+
     private val maxQuantityMutable = MutableLiveData<Int>()
     val maxQuantityLiveData: LiveData<Int> = maxQuantityMutable
 
@@ -39,11 +41,10 @@ class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
 
 
     init {
-        //userDataLiveData = smokingDataRepo.allData
 
         //CHART ITEMS TRIGGERING
         //View Height & Db data as sources. Trigger only when all variables are set
-        chartItemsUi.addSource(dbDataLiveData) {
+        chartItemsUiMediator.addSource(dbDataLiveData) {
             if (enoughDataToProceed()) {
                 mapChartItems(
                     ArrayList(it), maxViewHeightLiveData.value!!,
@@ -52,7 +53,7 @@ class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
             }
         }
 
-        chartItemsUi.addSource(maxViewHeightLiveData) {
+        chartItemsUiMediator.addSource(maxViewHeightLiveData) {
             if (enoughDataToProceed()) {
                 mapChartItems(
                     ArrayList(dbDataLiveData.value!!), it,
@@ -62,7 +63,7 @@ class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
         }
 
         //Preferences as source
-        chartItemsUi.addSource(preferencesRepo.prefHasChanged) {
+        chartItemsUiMediator.addSource(preferencesRepo.prefHasChanged) {
             if (!enoughDataToProceed()) return@addSource
 
             mapChartItems(
@@ -74,7 +75,6 @@ class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
     }
 
     private fun enoughDataToProceed() = (dbDataLiveData.value != null && maxViewHeightLiveData.value != null)
-
 
     //-------------------------------------------------------------------------------------------//
     //                                     D A T A   B A S E
@@ -91,6 +91,7 @@ class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
             }
         }
     }
+
     //-------------------------------------------------------------------------------------------//
     //                                         C H A R T
     //-------------------------------------------------------------------------------------------//
@@ -100,8 +101,8 @@ class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
         startingTime: Long, defaultConsumption: Int
     ) {
 
-        Log.d("debuglog", dbList.size.toString())
-        Log.d("debuglog", "MAPPING")
+        //Log.d("debuglog", dbList.size.toString())
+        //Log.d("debuglog", "MAPPING")
 
         val maxConsumption = getMaxConsumption(dbList, defaultConsumption)
         maxQuantityMutable.value = maxConsumption //Used for bar height
@@ -137,7 +138,7 @@ class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
             }
         }
 
-        chartItemsUi.value = dataUi
+        chartItemsUiMediator.value = dataUi
 
         //Check for empty view
         emptyGraph.value = dataUi.isEmpty()
@@ -145,54 +146,6 @@ class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
         mapRoundDataItems(dbDataLiveData.value!!, dayNbr)
     }
 
-    /*
-    private fun mapSmokingChartItems(
-        dbList: ArrayList<SmokingData>, maxHeight: Int,
-        startingTime: Long, defaultConsumption: Int
-    ) {
-        val dataUi = ArrayList<SmokingChartItemUi>()
-        val dayNbr = calculateDaysNbr()
-
-        val maxConsumption = getMaxConsumption(dbList, defaultConsumption)
-        maxQuantityMutable.value = maxConsumption //Used for bar height
-
-        for (i in 0..dayNbr) {
-
-            if (dbList.size == 0 || ((dbList[0].creationTimeStamp - startingTime) / millisInDay).toInt() != i) {
-                //Day is not in data base -> create default smoking data
-                var height = (maxHeight / maxConsumption) * defaultConsumption
-                if (height == 0) height = 25 //So it's still visible in chart
-                dataUi.add(
-                    SmokingChartItemUi(
-                        startingTime + i * millisInDay,
-                        formatDateString(startingTime + i * millisInDay),
-                        defaultConsumption,
-                        height
-                    )
-                )
-            } else {
-                //Day is in database
-                //HEIGHT
-                var height = (maxHeight / maxConsumption * dbList[0].cigaretteNbr)
-                if (height == 0) height = 25
-
-                //DESCRIPTION
-                val dateStr = formatDateString(dbList[0].creationTimeStamp)
-
-                dataUi.add(SmokingChartItemUi(
-                    dbList[0].creationTimeStamp, dateStr, dbList[0].cigaretteNbr, height)
-                )
-                dbList.removeAt(0)
-            }
-        }
-        chartItemsUi.value = dataUi
-
-        //Check for empty view
-        emptyGraph.value = dataUi.isEmpty()
-
-        mapRoundDataItems(dbDataLiveData.value!!, dayNbr)
-    }
-     */
 
     private fun calculateDaysNbr(): Int {
         val todayMilli = System.currentTimeMillis()
@@ -264,7 +217,11 @@ class SmokingDataViewModel(private val preferencesRepo: PreferencesRepository,
     }
 
     fun getSmokingChartItems(): LiveData<List<SmokingChartItemUi>> {
-        return chartItemsUi
+        return chartItemsUiMediator
+    }
+
+    fun getLogDataItems(): LiveData<List<LogDataUi>> {
+        return roundDataItemUi
     }
 
 }

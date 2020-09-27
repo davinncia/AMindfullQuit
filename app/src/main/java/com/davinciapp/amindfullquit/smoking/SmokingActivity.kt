@@ -8,8 +8,7 @@ import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -41,7 +40,6 @@ class SmokingActivity : AppCompatActivity(), SmokingChartAdapter.ItemClickListen
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_smoking)
 
-        //this.supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.myRed)))
         setSupportActionBar(findViewById(R.id.toolbar_smoking_activity))
         supportActionBar?.title = ""
 
@@ -54,13 +52,10 @@ class SmokingActivity : AppCompatActivity(), SmokingChartAdapter.ItemClickListen
         initChartRecyclerView()
         initRoundDataRecyclerView()
 
-        viewModel = ViewModelProviders.of(
-            this,
-            ViewModelFactory.getInstance(application)
-        )[SmokingDataViewModel::class.java]
+        viewModel = ViewModelProvider(this, ViewModelFactory.getInstance(application))[SmokingDataViewModel::class.java]
 
         //EMPTY VIEW
-        viewModel.emptyGraph.observe(this, Observer { empty ->
+        viewModel.emptyGraph.observe(this, { empty ->
             if (empty) {
                 findViewById<View>(R.id.layout_empty_view_chart_smoking).visibility = View.VISIBLE
                 chartRecyclerView.visibility = View.GONE
@@ -70,18 +65,17 @@ class SmokingActivity : AppCompatActivity(), SmokingChartAdapter.ItemClickListen
             }
         })
 
-        viewModel.getSmokingChartItems().observe(this, Observer { data ->
+        viewModel.getSmokingChartItems().observe(this, { data ->
             chartAdapter.populateChart(data)
             chartRecyclerView.scrollToPosition(data.size - 1)
         })
 
-        viewModel.maxQuantityLiveData.observe(this, Observer {
+        viewModel.maxQuantityLiveData.observe(this, {
             findViewById<TextView>(R.id.text_view_smoke_chart_legend_max).text = it.toString()
         })
 
-        viewModel.cigarettesAvoidedLiveData.observe(this, Observer {
+        viewModel.getLogDataItems().observe(this, {
             dataAdapter.populateData(it)
-            //findViewById<TextView>(R.id.tv_number_smoking_log).text = it.toString()
         })
 
         chartRecyclerView.dimensions { height, _ ->
@@ -117,6 +111,7 @@ class SmokingActivity : AppCompatActivity(), SmokingChartAdapter.ItemClickListen
 
             setOnTouchListener { _, event ->
                 scaleGestureListener.onTouchEvent(event)
+                performClick()
                 false //Still allow scrolling
             }
         }

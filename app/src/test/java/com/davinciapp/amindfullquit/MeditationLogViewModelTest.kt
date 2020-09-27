@@ -44,7 +44,7 @@ class MeditationLogViewModelTest {
 
     @Test(expected = TimeoutException::class)
     fun when_ViewHeightIsNotGiven_Then_ItemsAreNotMapped() {
-        val items = (viewModel.getChartItems()).getOrAwaitValue()
+        (viewModel.getChartItems()).getOrAwaitValue()
     }
 
     //-------------------------------------------------------------------------------------------//
@@ -101,7 +101,7 @@ class MeditationLogViewModelTest {
         viewModel.setMaxBarHeight(100)
         //WHEN
         val items = (viewModel.getChartItems()).getOrAwaitValue()
-        val expectedItems = listOf<ChartItemUi>(
+        val expectedItems = listOf(
             ChartItemUi("jeu.  01  janv.", 1, 42),
             ChartItemUi("sam.  02  juin", 2, 84)
         )

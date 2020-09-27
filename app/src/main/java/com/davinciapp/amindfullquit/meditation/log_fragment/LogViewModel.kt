@@ -51,7 +51,7 @@ class LogViewModel(application: Application, meditationRepo: MeditationSessionRe
 
         //TOTAL TIME
         var totalTime = 0
-        var valueStr: String
+        val valueStr: String
         val unit: String
 
         for (i in sessions){
@@ -84,7 +84,6 @@ class LogViewModel(application: Application, meditationRepo: MeditationSessionRe
     //                                        C H A R T
     //-------------------------------------------------------------------------------------------//
     private fun mapChartItems(sessions: List<MeditationSession>, maxHeight: Int){
-        //TODO: starting date, empty days
 
         emptyGraphLiveData.value = sessions.isEmpty()
 
